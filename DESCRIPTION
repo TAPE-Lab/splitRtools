@@ -1,0 +1,26 @@
+Package: splitRtools
+Title: Processes split-seq data for downstream analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person("James", "Opzoomer", , "james.opzoomer@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+LazyData: true
+Depends:
+  SingleCellExperiment,
+  ggplot2
+Imports:
+  zellkonverter,
+  stringr,
+  ShortRead,
+  scater,
+  dplyr,
+  DropletUtils,
+  scales,
+  ComplexHeatmap,
+  circlize
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
