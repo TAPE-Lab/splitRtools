@@ -11,7 +11,7 @@
 #' @import SingleCellExperiment
 #' @export
 
-# Bugs -  the subsetting doesn't actually subset anything.
+# Probably don't need an object for each sample?? remove this feature.
 # How am I going to integrate cite-seq data?
 
 
@@ -123,24 +123,27 @@ run_split_pipe <- function(
                                              output_folder = output_folder_abs,
                                              exp_name = exp_name)
 
-      # split_stats_write_function - temp here but will move to the end
-      #  after stats are done
-      write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt,
-                                     output_folder = output_folder_abs,
-                                     exp_name = exp_name)
-
-      print("making stats")
-      # split_stats_write_function
-      sce_split_lab_filt_stats <- split_stats_output(sce_split = sce_split_lab_filt,
-                                                     output_folder = output_folder_abs,
-                                                     exp_name = exp_name)
       print("making heatmaps")
       # Make the heatmaps
       generate_barcoding_heatmaps(sce_split = sce_split_lab_filt,
                                   output_folder = output_folder_abs,
                                   exp_name = exp_name)
 
-      # Make downsampling data
+      print("making stats")
+      # Generate read level and cell statistics summary
+      # Taking the filtered sce as input
+      sce_split_lab_filt_stats <- split_stats_output(sce_split = sce_split_lab_filt,
+                                                     output_folder = output_folder_abs,
+                                                     exp_name = exp_name)
+
+
+      # Make downsampling data and embed into the sce_bject
+      # Write the downsampling data to file
+
+      # split_stats_write_function
+      write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt_stats,
+                                     output_folder = output_folder_abs,
+                                     exp_name = exp_name)
 
 
       # create html report

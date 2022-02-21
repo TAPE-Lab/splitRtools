@@ -14,6 +14,7 @@ Depends:
   ggplot2
 Imports:
   zellkonverter,
+  readr,
   stringr,
   ShortRead,
   scater,
@@ -21,6 +22,8 @@ Imports:
   DropletUtils,
   scales,
   ComplexHeatmap,
-  circlize
+  circlize,
+  RColorBrewer,
+  Matrix
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2

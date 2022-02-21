@@ -100,7 +100,7 @@ generate_barcoding_heatmaps <- function(sce_split,
                           cluster_columns = F,
                           cluster_rows = F,
                           col = pal_1,
-                          rect_gp = gpar(col = "black", lwd = 1),
+                          rect_gp = grid::gpar(col = "black", lwd = 1),
                           column_title = "RT cell counts",
                           heatmap_legend_param = list(
                           title = "cell number"))
@@ -129,11 +129,11 @@ generate_barcoding_heatmaps <- function(sce_split,
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/ligation_1_barcoding_layout.png"),
       res = 400, width = 15, height = 10, units = "cm")
 
-  draw(Heatmap(r1_loc_mat,
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(r1_loc_mat,
                cluster_columns = F,
                cluster_rows = F,
                col = pal_1,
-               rect_gp = gpar(col = "black", lwd = 1),
+               rect_gp = grid::gpar(col = "black", lwd = 1),
                column_title = "Ligation_1 cell counts",
                heatmap_legend_param = list(
                  title = "cell number"))
@@ -159,11 +159,11 @@ generate_barcoding_heatmaps <- function(sce_split,
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/ligation_2_barcoding_layout.png"),
       res = 400, width = 15, height = 10, units = "cm")
 
-  draw(Heatmap(r2_loc_mat,
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(r2_loc_mat,
                cluster_columns = F,
                cluster_rows = F,
                col = pal_1,
-               rect_gp = gpar(col = "black", lwd = 1),
+               rect_gp = grid::gpar(col = "black", lwd = 1),
                column_title = "Ligation_2 cell counts",
                heatmap_legend_param = list(
                  title = "cell number"))
@@ -180,7 +180,7 @@ generate_barcoding_heatmaps <- function(sce_split,
   #################### transcript information #################################
 
   # Combine the UMI count with the locs
-  umi_rt <- data.frame(rt_id = rt_locs, umi = sce$total)
+  umi_rt <- data.frame(rt_id = rt_locs, umi = sce_split$total)
 
   # Summarize median by id
   med_umi_rt <- umi_rt %>% group_by(rt_id) %>% summarise(median(umi))
@@ -204,11 +204,11 @@ generate_barcoding_heatmaps <- function(sce_split,
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/rt_umi_layout.png"),
       res = 400, width = 15, height = 5, units = "cm")
 
-  draw(Heatmap(rt_umi_mat,
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(rt_umi_mat,
                cluster_columns = F,
                cluster_rows = F,
                col = pal_1,
-               rect_gp = gpar(col = "black", lwd = 1),
+               rect_gp = grid::gpar(col = "black", lwd = 1),
                column_title = "RT median UMI per well",
                heatmap_legend_param = list(
                  title = "Median UMI per well"))
@@ -219,7 +219,7 @@ generate_barcoding_heatmaps <- function(sce_split,
   ## LIGATION UMI HEATMAPS
   ## Ligation 1
   # Combine the UMI count with the locs
-  umi_r1 <- data.frame(r1_id = r1_locs, umi = sce$total)
+  umi_r1 <- data.frame(r1_id = r1_locs, umi = sce_split$total)
 
   # Summarize median by id
   med_umi_r1 <- umi_r1 %>% group_by(r1_id) %>% summarise(median(umi))
@@ -243,11 +243,11 @@ generate_barcoding_heatmaps <- function(sce_split,
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/ligation_1_umi_layout.png"),
       res = 400, width = 15, height = 10, units = "cm")
 
-  draw(Heatmap(r1_umi_mat,
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(r1_umi_mat,
                cluster_columns = F,
                cluster_rows = F,
                col = pal_1,
-               rect_gp = gpar(col = "black", lwd = 1),
+               rect_gp = grid::gpar(col = "black", lwd = 1),
                column_title = "Ligation_1 median UMI per well",
                heatmap_legend_param = list(
                  title = "Median UMI per well"))
@@ -256,7 +256,7 @@ generate_barcoding_heatmaps <- function(sce_split,
 
   ## Ligation 2
   # Combine the UMI count with the locs
-  umi_r2 <- data.frame(r2_id = r2_locs, umi = sce$total)
+  umi_r2 <- data.frame(r2_id = r2_locs, umi = sce_split$total)
 
   # Summarize median by id
   med_umi_r2 <- umi_r2 %>% group_by(r2_id) %>% summarise(median(umi))
@@ -280,11 +280,11 @@ generate_barcoding_heatmaps <- function(sce_split,
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/ligation_2_umi_layout.png"),
       res = 400, width = 15, height = 10, units = "cm")
 
-  draw(Heatmap(r2_umi_mat,
+  ComplexHeatmap::draw(ComplexHeatmap::Heatmap(r2_umi_mat,
                cluster_columns = F,
                cluster_rows = F,
                col = pal_1,
-               rect_gp = gpar(col = "black", lwd = 1),
+               rect_gp = grid::gpar(col = "black", lwd = 1),
                column_title = "Ligation_2 median UMI per well",
                heatmap_legend_param = list(
                  title = "Median UMI per well"))

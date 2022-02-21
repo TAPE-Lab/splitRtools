@@ -247,48 +247,6 @@ filter_split_sce <- function(sce_split,
 
 }
 
-
-
-
-#' @rdname split_stats_output
-#'
-#' @title intake raw SCE and report global and sample level stats
-#'
-#' @param
-#'
-#' @author James Opzoomer \email{james.opzoomer@gmail.com}
-#'
-#' @return a SCE with stats baked into metadata
-#'
-#' @import SingleCellExperiment
-#'
-split_stats_output <- function(sce_split,
-                               output_folder,
-                               exp_name){
-
-    # Get the total reads
-
-    # Generate the reads_cell
-
-    # Generate the reads heriarchy data
-
-    # Plot the reads hierarchy
-
-    # Get the UMI/gene per cell
-
-    # UMI @ 50
-
-    # Stash the stats in metadata
-
-    # write out to rds
-
-    # Split for each sample_type get basic stats and write
-
-
-
-
-}
-
 #' @rdname write_sce_split_lab_filt_stats
 #'
 #' @title intake complete SCE and write out to sce (.rds) and .H5ad
