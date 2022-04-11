@@ -2,15 +2,18 @@
 % Please edit documentation in R/plotting_utils.R
 \name{generate_barcoding_heatmaps}
 \alias{generate_barcoding_heatmaps}
-\title{}
+\title{Generate plate heatmaps of cell barcoding}
 \usage{
 generate_barcoding_heatmaps(sce_split, output_folder, exp_name)
+}
+\arguments{
+\item{sce_split}{the sce representation of the object}
 }
 \value{
 Null - generates the barcoding plate distribution heatmaps
 }
 \description{
-
+Generate plate heatmaps of cell barcoding
 }
 \author{
 James Opzoomer \email{james.opzoomer@gmail.com}

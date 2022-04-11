@@ -6,6 +6,9 @@
 \usage{
 raw_bc_hist(sub_lib_fp, output_folder, exp_name)
 }
+\arguments{
+\item{sub_lib_fp}{a filepath to the sublibrary data folder}
+}
 \value{
 complete exit value
 }

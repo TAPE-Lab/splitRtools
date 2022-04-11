@@ -6,6 +6,9 @@
 \usage{
 write_sce_split_lab_filt_stats(sce_split, output_folder, exp_name)
 }
+\arguments{
+\item{sce_split}{a SCE object representing the processed sublibrary}
+}
 \value{
 null - writes sce data to file
 }

@@ -2,7 +2,7 @@
 #'
 #' @title Run the split-seq pipeline
 #'
-#' @param
+#' @param mode a string of either 'single' or 'merge'
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'

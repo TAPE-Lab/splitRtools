@@ -2,7 +2,7 @@
 #'
 #' @title generate the sce
 #'
-#' @param
+#' @param sub_lib_fp a filepath representing the sublibrary filepath
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
@@ -82,11 +82,11 @@ gen_split_sce <- function(
 #'
 #' @title intake raw SCE and label with cell metadata as colData
 #'
-#' @param
+#' @param sce_split a SCE object representing the processed sublibrary
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
-#' @return a SCE with
+#' @return a SCE with labelled barcode well and sample info integrated.
 #'
 #' @import SingleCellExperiment
 #' @import readr
@@ -199,7 +199,7 @@ label_sce_cdata <- function(sce_split,
 #'
 #' @title intake labelled SCE and filter using dropletUtils
 #'
-#' @param
+#' @param sce_split
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
@@ -265,7 +265,7 @@ filter_split_sce <- function(sce_split,
 #'
 #' @title intake complete SCE and write out to sce (.rds) and .H5ad
 #'
-#' @param
+#' @param sce_split a SCE object representing the processed sublibrary
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
@@ -320,7 +320,7 @@ write_sce_split_lab_filt_stats <- function(sce_split,
 #'
 #' @title generate the sce downsampling statistics
 #'
-#' @param
+#' @param sce_split a SCE object representing the processed sublibrary
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'

@@ -13,8 +13,11 @@ label_sce_cdata(
   exp_name
 )
 }
+\arguments{
+\item{sce_split}{a SCE object representing the processed sublibrary}
+}
 \value{
-a SCE with
+a SCE with labelled barcode well and sample info integrated.
 }
 \description{
 intake raw SCE and label with cell metadata as colData

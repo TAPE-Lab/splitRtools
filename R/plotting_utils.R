@@ -2,7 +2,7 @@
 #'
 #' @title generate hist from raw bc_data
 #'
-#' @param
+#' @param sub_lib_fp a filepath to the sublibrary data folder
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
@@ -47,9 +47,9 @@ raw_bc_hist <- function(sub_lib_fp,
 
 #' @rdname generate_barcoding_heatmaps
 #'
-#' @title
+#' @title Generate plate heatmaps of cell barcoding
 #'
-#' @param
+#' @param sce_split the sce representation of the object
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'

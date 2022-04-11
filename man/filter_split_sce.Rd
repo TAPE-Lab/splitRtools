@@ -4,7 +4,16 @@
 \alias{filter_split_sce}
 \title{intake labelled SCE and filter using dropletUtils}
 \usage{
-filter_split_sce(sce_split, output_folder, exp_name)
+filter_split_sce(
+  sce_split,
+  output_folder,
+  exp_name,
+  filtering_mode = filtering_mode,
+  filter_value = filter_value
+)
+}
+\arguments{
+\item{sce_split}{}
 }
 \value{
 a SCE filtered on inctact cell barcodes

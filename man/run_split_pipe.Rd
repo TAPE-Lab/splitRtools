@@ -10,11 +10,15 @@ run_split_pipe(
   data_folder,
   output_folder,
   filtering_mode = "knee",
+  filter_value = 1000,
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
 )
+}
+\arguments{
+\item{mode}{a string of either 'single' or 'merge'}
 }
 \value{
 SCE output and reports from the split-seq run

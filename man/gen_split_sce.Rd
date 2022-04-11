@@ -15,6 +15,9 @@ gen_split_sce(
   library_stats_df
 )
 }
+\arguments{
+\item{sub_lib_fp}{a filepath representing the sublibrary filepath}
+}
 \value{
 SCE output and reports from the split-seq run
 }
