@@ -211,7 +211,10 @@ label_sce_cdata <- function(sce_split,
 #'
 filter_split_sce <- function(sce_split,
                              output_folder,
-                             exp_name){
+                             exp_name,
+                             filtering_mode = filtering_mode,
+                             filter_value = filter_value){
+
   message("I am filtering the SCE for intact cells")
   # Extract counts
   transcript_data <- SingleCellExperiment::counts(sce_split)
@@ -237,10 +240,21 @@ filter_split_sce <- function(sce_split,
   ggsave(plot = wfall_reads_fil, paste0(output_folder, '/',exp_name ,"/gplots/3_umi_waterfall.png"),
          device = "png", width = 7.22, height = 7.22)
 
-  # Could save the br.out as metadata?
+  if(filtering_mode == "knee"){
 
-  # filter based on the inflection value
-  sce_split_filter <- sce_split[, j = (sce_split$sum > metadata(br.out)$inflection)]
+    message("filtering by knee cutoff")
+
+    sce_split_filter <- sce_split[, j = (sce_split$sum > metadata(br.out)$inflection)]
+
+  }
+
+  if(filtering_mode == "manual"){
+
+    message("filtering by manual cutoff")
+
+    sce_split_filter <- sce_split[, j = (sce_split$sum > filter_value)]
+
+  } else{return()}
 
   # return the filtered sce
   return(sce_split_filter)
@@ -302,3 +316,28 @@ write_sce_split_lab_filt_stats <- function(sce_split,
 
 }
 
+#' @rdname split_stats_downsample_rds
+#'
+#' @title generate the sce downsampling statistics
+#'
+#' @param
+#'
+#' @author James Opzoomer \email{james.opzoomer@gmail.com}
+#'
+#' @return SCE output and reports from the split-seq run
+#'
+#' @import SingleCellExperiment
+#' @import readr
+#' @import Matrix
+#'
+#'
+split_stats_downsample_rds <- function(sce_split,
+                                       output_folder,
+                                       exp_name){
+
+  # Read in the downsampling vector
+
+
+
+  return(sce_split)
+}

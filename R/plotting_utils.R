@@ -26,9 +26,12 @@ raw_bc_hist <- function(sub_lib_fp,
   # Rename the cols
   colnames(bc_stats_df) <- c("BC", "n_reads")
 
+  # Cutoff at 100 reads like in the pipeline
+  bc_stats_df_filt <- bc_stats_df %>% dplyr::filter(n_reads > 100)
+
   # Create histogram of raw barcode read_depth
-  gg_hist <- ggplot2::ggplot(bc_stats_df, aes(x=n_reads)) +
-              ggplot2::geom_histogram(color="darkblue", fill="lightblue", binwidth = 100) +
+  gg_hist <- ggplot2::ggplot(bc_stats_df_filt, aes(x=n_reads)) +
+              ggplot2::geom_histogram(color="darkblue", fill="lightblue", binwidth = 500) +
               ggplot2::geom_vline(aes(xintercept=median(n_reads)),
                             color="blue", linetype="dashed", size=1) +
               ggplot2::scale_y_continuous(trans='log10') +

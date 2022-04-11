@@ -21,6 +21,7 @@ run_split_pipe <- function(
   data_folder,
   output_folder,
   filtering_mode = "knee",
+  filter_value = 1000,
   fastq_path, # change to extraction nextSeq_log
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
@@ -79,11 +80,12 @@ run_split_pipe <- function(
       total_reads <- get_read_count(fastq_path = fastq_path_abs)
 
       # Plot the raw reads -- this is edited out for time
-      raw_bc_hist(sub_lib_fp = dirs[1],
-                 output_folder = output_folder_abs,
-                  exp_name = exp_name)
+      # This takes a really long time and need to be modified
+      #raw_bc_hist(sub_lib_fp = dirs[1],
+      #           output_folder = output_folder_abs,
+      #            exp_name = exp_name)
 
-      # Binning stats visualisation
+      # Binning stats visualisations
       # TODO
 
       # Get the overall run_stats
@@ -121,7 +123,9 @@ run_split_pipe <- function(
 
       sce_split_lab_filt <- filter_split_sce(sce_split = sce_split_lab,
                                              output_folder = output_folder_abs,
-                                             exp_name = exp_name)
+                                             exp_name = exp_name,
+                                             filtering_mode = filtering_mode,
+                                             filter_value = filter_value)
 
       print("making heatmaps")
       # Make the heatmaps
@@ -139,6 +143,9 @@ run_split_pipe <- function(
 
       # Make downsampling data and embed into the sce_bject
       # Write the downsampling data to file
+      # sce_split_lab_filt_stats_ds <- split_stats_downsample_rds(sce_split = sce_split_lab_filt,
+                                     #   output_folder = output_folder_abs,
+                                     #   exp_name = exp_name)
 
       # split_stats_write_function
       write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt_stats,
