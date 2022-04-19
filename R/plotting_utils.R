@@ -65,6 +65,7 @@ generate_barcoding_heatmaps <- function(sce_split,
                                         exp_name){
 
   message("Generating QC heatmaps on filtered objects.")
+
   # Extract the barcoding:
   # 1) Count information
   # 2) UMI information
@@ -95,18 +96,19 @@ generate_barcoding_heatmaps <- function(sce_split,
   # Counts pal
   pal_1 <- colorRamp2(c(0,1,max(rt_counts_layout$counts)), c("gray", "floralwhite", "forestgreen"))
 
+
   # Heatmap
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/rt_barcoding_layout.png"),
                   res = 400, width = 15, height = 5, units = "cm")
 
   draw(Heatmap(rt_loc_mat,
-                          cluster_columns = F,
-                          cluster_rows = F,
-                          col = pal_1,
-                          rect_gp = grid::gpar(col = "black", lwd = 1),
-                          column_title = "RT cell counts",
-                          heatmap_legend_param = list(
-                          title = "cell number"))
+                cluster_columns = F,
+                cluster_rows = F,
+                col = pal_1,
+                rect_gp = grid::gpar(col = "black", lwd = 1),
+                column_title = "RT cell counts",
+                heatmap_legend_param = list(
+                title = "cell number"))
   )
   dev.off()
 
@@ -128,6 +130,7 @@ generate_barcoding_heatmaps <- function(sce_split,
   # Counts pal
   pal_1 <- colorRamp2(c(0,1,max(r1_counts_layout$counts)), c("gray", "floralwhite", "forestgreen"))
 
+  message("writing RT heatmap!")
   # Heatmap
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/ligation_1_barcoding_layout.png"),
       res = 400, width = 15, height = 10, units = "cm")

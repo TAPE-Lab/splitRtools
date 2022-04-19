@@ -70,10 +70,6 @@ gen_split_sce <- function(
   dir.create(file.path(paste0(output_folder,'/',exp_name ,  "/unfiltered/sce_rds_objects")))
   dir.create(file.path(paste0(output_folder,'/',exp_name ,  "/unfiltered/h5ad_objects")))
 
-  # Save the object
-  saveRDS(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds"))
-  zellkonverter::writeH5AD(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/h5ad_objects/",exp_name,"_sce_unfiltered.h5ad"))
-
   # Return the SCE
   return(sce_split)
 }
@@ -188,6 +184,10 @@ label_sce_cdata <- function(sce_split,
     }
   }
 
+  # Save the object
+  saveRDS(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds"))
+  zellkonverter::writeH5AD(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/h5ad_objects/",exp_name,"_sce_unfiltered.h5ad"))
+
   message("Unfiltered SCE objects written to file!!")
 
   return(sce_split)
@@ -216,6 +216,7 @@ filter_split_sce <- function(sce_split,
                              filter_value = filter_value){
 
   message("I am filtering the SCE for intact cells")
+
   # Extract counts
   transcript_data <- SingleCellExperiment::counts(sce_split)
 
@@ -248,13 +249,14 @@ filter_split_sce <- function(sce_split,
 
   }
 
-  if(filtering_mode == "manual"){
+  else if(filtering_mode == "manual"){
 
     message("filtering by manual cutoff")
 
     sce_split_filter <- sce_split[, j = (sce_split$sum > filter_value)]
 
-  } else{return()}
+  }else{message("Filtering condition not recognised!")
+         message("Please use either knee or manual (with manual tscp cutoff)")}
 
   # return the filtered sce
   return(sce_split_filter)
