@@ -12,7 +12,7 @@
 #' @export
 
 # Probably don't need an object for each sample?? remove this feature.
-# How am I going to integrate cite-seq data?
+# I need to reassign the fastq segment
 
 
 run_split_pipe <- function(
@@ -40,9 +40,10 @@ run_split_pipe <- function(
 
     # Count the libraries try/catch if doesn't exist
     dirs = list.dirs(path = data_folder_abs, recursive = FALSE)
+    print(paste0("There are: ",length(dirs), " sublibraries detected!"))
 
     # This also needs to execute a loop through the sublibraries if multiple
-    if(length(dirs) != 1){
+    if(length(dirs) != n_sublibs){
 
       warning("Number of possible sublibraries in data_folder is not 1")
       warning("Check data_folder directory structure")
@@ -53,14 +54,16 @@ run_split_pipe <- function(
 
     } else{
 
-      message(paste0("extracting one sublibrary -- ", dirs[1]))
+      for(i in 1:length(dirs)){
+
+      message(paste0("extracting raw data from sublibrary -- ", dirs[i]))
 
       # Check the directory structure of the sublibrary path
       # So that all files exits otherwise exit
       # TODO
 
       # Extract the experiment name from the sublib_folder
-      exp_name <- rev(stringr::str_split(dirs[1], pattern = "/")[[1]])[1]
+      exp_name <- rev(stringr::str_split(dirs[i], pattern = "/")[[1]])[1]
 
       # Check Arguments if paths exist
       dir.create(file.path(output_folder_abs))
@@ -74,7 +77,9 @@ run_split_pipe <- function(
       # Exctract the FASTQ path
       # TODO function
 
-      fastq_path_abs = normalizePath(fastq_path)
+      fastq_path_dir <- normalizePath(fastq_path)
+
+      fastq_path_abs <- paste0(fastq_path_dir, "/", exp_name)
 
       # Extract the total raw read info
       total_reads <- get_read_count(fastq_path = fastq_path_abs)
@@ -90,7 +95,7 @@ run_split_pipe <- function(
 
       # Get the overall run_stats
       library_stats_df <- get_seq_run_info(total_reads = total_reads,
-                                       sub_lib_fp = dirs[1],
+                                       sub_lib_fp = dirs[i],
                                        output_folder = output_folder_abs,
                                        exp_name = exp_name)
 
@@ -103,7 +108,7 @@ run_split_pipe <- function(
       # Generate unfiltered data
       # Put the run metadata in the SCE_metadata
       # TODO - put into the gen_split_sce
-      sce_split = gen_split_sce(sub_lib_fp = dirs[1],
+      sce_split = gen_split_sce(sub_lib_fp = dirs[i],
                                 output_folder = output_folder_abs,
                                 dge_mtx = dge_mtx_fp,
                                 gene_names = gene_names_fp,
@@ -154,11 +159,12 @@ run_split_pipe <- function(
 
       # create html report
 
+      }
     }
 
-  } else if(mode == 'multi'){
+  } else if(mode == 'merge'){
 
-    message("Running in multi mode - mutli sublibrary input")
+    message("Running in merge mode - merge sublibrary input")
     message("Checking for directory structure")
 
     # Check is the number of sublibraries match the input
@@ -167,9 +173,9 @@ run_split_pipe <- function(
 
   } else {
 
-    warning("Mode not recognised please choose from - sinlge or multi")
-    warning("Single - one sublibrary")
-    warning("Multi - mutliple sublibraries")
+    warning("Mode not recognised please choose from - sinlge or merge")
+    warning("Single - process sublibraries independantly")
+    warning("merge - merge sublibrary output into one sce object")
     warning("Exiting")
 
     return()
