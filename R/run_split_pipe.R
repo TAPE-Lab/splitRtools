@@ -6,7 +6,7 @@
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
-#' @return SCE output and reports from the split-seq run
+#' @return SCE output and reports from zUMIs processing of split-seq FASTQ data
 #'
 #' @import SingleCellExperiment
 #' @export
@@ -28,9 +28,6 @@ run_split_pipe <- function(
   sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
 ){
 
-  # If run in single check for single data folder
-  if(mode == 'single'){
-
     message("Running in single mode - single sublibrary input")
     message("Checking for directory structure")
 
@@ -42,7 +39,7 @@ run_split_pipe <- function(
     dirs = list.dirs(path = data_folder_abs, recursive = FALSE)
     print(paste0("There are: ",length(dirs), " sublibraries detected!"))
 
-    # This also needs to execute a loop through the sublibraries if multiple
+
     if(length(dirs) != n_sublibs){
 
       warning("Number of possible sublibraries in data_folder is not 1")
@@ -52,7 +49,13 @@ run_split_pipe <- function(
 
       return()
 
+      # This loop executes a loop through the sublibraries in data folder
     } else{
+
+      if(mode == 'single'){
+
+        message("Running in single sublib mode - sublibrary input analysed separately!")
+      }
 
       for(i in 1:length(dirs)){
 
@@ -146,7 +149,7 @@ run_split_pipe <- function(
 
 
       # Make downsampling data and embed into the sce_bject
-      # Write the downsampling data to file
+      # Change this to a UMI/gene vs reads plot
       # sce_split_lab_filt_stats_ds <- split_stats_downsample_rds(sce_split = sce_split_lab_filt,
                                      #   output_folder = output_folder_abs,
                                      #   exp_name = exp_name)
@@ -162,14 +165,38 @@ run_split_pipe <- function(
       }
     }
 
-  } else if(mode == 'merge'){
+    if(mode == 'merge'){
 
     message("Running in merge mode - merge sublibrary input")
     message("Checking for directory structure")
 
-    # Check is the number of sublibraries match the input
+    # Run in merge-mode
+    # create the merge output folders
+    merge_out_dir <- "sub_lib_merged"
+    dir.create(file.path(output_folder_abs, merge_out_dir))
+    dir.create(file.path(output_folder_abs, merge_out_dir, "unfiltered"))
+    dir.create(file.path(output_folder_abs, merge_out_dir, "filtered"))
+    dir.create(file.path(output_folder_abs, merge_out_dir, "gplots"))
+    dir.create(file.path(output_folder_abs, merge_out_dir, "reports"))
 
-    # Run in multi-mode
+    # pull the two unfiltered objects and merge the sce
+    # wipe the metadata for re-writing
+
+    # Adjust the metadata stats in the sce
+
+    # Filter the intact cells in the object
+
+    print("making heatmaps")
+    # Make the barcoding heatmaps
+
+    # Make merged stats
+
+    # split_stats_write_function
+
+    # Generate initial dynamic UMAP data - TDL
+
+    # create html report
+
 
   } else {
 
@@ -180,9 +207,4 @@ run_split_pipe <- function(
 
     return()
   }
-
-  # Check if inputs are correct
-
-
-
 }
