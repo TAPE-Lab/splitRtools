@@ -1,0 +1,14 @@
+---
+title: "README"
+author: "james_opzoomer"
+date: "26/04/2022"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Welcome to the splitRtools package!  
+
+ 
