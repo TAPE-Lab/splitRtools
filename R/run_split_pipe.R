@@ -11,9 +11,11 @@
 #' @import SingleCellExperiment
 #' @export
 
-# Probably don't need an object for each sample?? remove this feature.
-# I need to reassign the fastq segment
+# Bugs
+# There is a bug where two lines are added to each SCE lib info metadata slot
 
+# TODO
+# Could introduce some parrallelism into the single-mode
 
 run_split_pipe <- function(
   mode = 'single',
@@ -57,6 +59,14 @@ run_split_pipe <- function(
         message("Running in single sublib mode - sublibrary input analysed separately!")
       }
 
+      # If the merging the sublibs, create a list of unfiltered SCEs
+      # These will be used later to add in the SCEs processed one at a time
+      if(mode == 'merge'){
+
+        sublib_list <- list()
+
+      }
+
       for(i in 1:length(dirs)){
 
       message(paste0("extracting raw data from sublibrary -- ", dirs[i]))
@@ -89,6 +99,7 @@ run_split_pipe <- function(
 
       # Plot the raw reads -- this is edited out for time
       # This takes a really long time and need to be modified
+      # Not sustainable in current format
       #raw_bc_hist(sub_lib_fp = dirs[1],
       #           output_folder = output_folder_abs,
       #            exp_name = exp_name)
@@ -108,9 +119,8 @@ run_split_pipe <- function(
       # Get the gene_names
       gene_names_fp <- paste0(exp_name, ".gene_names.txt")
 
-      # Generate unfiltered data
-      # Put the run metadata in the SCE_metadata
-      # TODO - put into the gen_split_sce
+
+      # create the unfiltered SCE object
       sce_split = gen_split_sce(sub_lib_fp = dirs[i],
                                 output_folder = output_folder_abs,
                                 dge_mtx = dge_mtx_fp,
@@ -118,7 +128,7 @@ run_split_pipe <- function(
                                 exp_name = exp_name,
                                 library_stats_df = library_stats_df)
 
-      # Label the sce
+      # Label the sce with sample and sublibrary metadata
       sce_split_lab <- label_sce_cdata(sce_split = sce_split,
                                       rt_bc_map = rt_bc,
                                       lig_bc = lig_bc,
@@ -126,8 +136,15 @@ run_split_pipe <- function(
                                       output_folder = output_folder_abs,
                                       exp_name = exp_name)
 
+      # add the unfilteres SCEs to the 'sublib_list' here for mergeing later
+      if(mode == 'merge'){
 
-      # Filter the intact cells in the object
+        sublib_list_tmp <- list(sce_split_lab)
+        sublib_list <- append(sublib_list, sublib_list_tmp)
+
+      }
+
+      # Filter the intact cells in the object with dropletUTILS
       sce_split_lab_filt <- filter_split_sce(sce_split = sce_split_lab,
                                              output_folder = output_folder_abs,
                                              exp_name = exp_name,
@@ -179,7 +196,22 @@ run_split_pipe <- function(
     dir.create(file.path(output_folder_abs, merge_out_dir, "gplots"))
     dir.create(file.path(output_folder_abs, merge_out_dir, "reports"))
 
-    # pull the two unfiltered objects and merge the sce
+    # Check if there are less than two sublibraries
+    # Cannot merge if there is only 1 so exit
+    if(length(dirs) < 2){
+
+      warning("Number of possible sublibraries in data_folder is less than 2")
+      warning("Check data_folder directory structure")
+      warning("Cannot merge fewer than 2 sublibaries")
+      warning("Exiting")
+
+      return()
+
+    }
+
+    # Take the list of SCEs that were generate earlier in single mode
+    print(sublib_list)
+
     # wipe the metadata for re-writing
 
     # Adjust the metadata stats in the sce
