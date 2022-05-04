@@ -21,7 +21,7 @@ run_split_pipe(
 \item{mode}{a string of either 'single' or 'merge'}
 }
 \value{
-SCE output and reports from the split-seq run
+SCE outputs, summary figures and reports from zUMIs processing of split-seq FASTQ data
 }
 \description{
 Run the split-seq pipeline

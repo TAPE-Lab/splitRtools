@@ -6,7 +6,7 @@
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
-#' @return SCE output and reports from zUMIs processing of split-seq FASTQ data
+#' @return SCE outputs, summary figures and reports from zUMIs processing of split-seq FASTQ data
 #'
 #' @import SingleCellExperiment
 #' @export
@@ -16,6 +16,7 @@
 
 # TODO
 # Could introduce some parrallelism into the single-mode
+# Test SCE2anndata as may preserve some additional functionality
 
 run_split_pipe <- function(
   mode = 'single',
@@ -63,7 +64,8 @@ run_split_pipe <- function(
       # These will be used later to add in the SCEs processed one at a time
       if(mode == 'merge'){
 
-        sublib_list <- list()
+        # initialize the exp_name lists for merging later
+        exp_name_list <- list()
 
       }
 
@@ -77,6 +79,10 @@ run_split_pipe <- function(
 
       # Extract the experiment name from the sublib_folder
       exp_name <- rev(stringr::str_split(dirs[i], pattern = "/")[[1]])[1]
+
+      # Collect the exp name for later merging
+      exp_name_list_tmp <- list(exp_name)
+      exp_name_list <- append(exp_name_list, exp_name_list_tmp)
 
       # Check Arguments if paths exist
       dir.create(file.path(output_folder_abs))
@@ -129,20 +135,13 @@ run_split_pipe <- function(
                                 library_stats_df = library_stats_df)
 
       # Label the sce with sample and sublibrary metadata
-      sce_split_lab <- label_sce_cdata(sce_split = sce_split,
+      sce_split_lab <- label_sce_data(sce_split = sce_split,
                                       rt_bc_map = rt_bc,
                                       lig_bc = lig_bc,
                                       sample_map = sample_map,
                                       output_folder = output_folder_abs,
                                       exp_name = exp_name)
 
-      # add the unfilteres SCEs to the 'sublib_list' here for mergeing later
-      if(mode == 'merge'){
-
-        sublib_list_tmp <- list(sce_split_lab)
-        sublib_list <- append(sublib_list, sublib_list_tmp)
-
-      }
 
       # Filter the intact cells in the object with dropletUTILS
       sce_split_lab_filt <- filter_split_sce(sce_split = sce_split_lab,
@@ -210,13 +209,34 @@ run_split_pipe <- function(
     }
 
     # Take the list of SCEs that were generate earlier in single mode
-    print(sublib_list)
+    # Holding all the sce objects in active memory is really inefficient
+    # Therefore read them in from file .rds using dirs one at a time
+    # starting with 1
+    exp_name <- exp_name_list[[1]]
+    unfil_rds_path_1 <- paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds")
+    sce_split <- readRDS(unfil_rds_path_1)
 
-    # wipe the metadata for re-writing
+    print(sce_split)
+
+    # extract the fastq number from each SCE
+    total_reads <- data.frame(sublib_id = sce_split$sub_lib_id[1],
+                              total_reads = metadata(sce_split)$library_info[1,1])
+
+    # Create the merged SCE
+    merge_sce <- sce_split
+    metadata(merge_sce) <- list(total_reads = total_reads)
+
+    print(sce_split)
+    print(merge_sce)
+
+    # looping through the rest
+    # merge the assay data and the metadata using sce_split to reduce memory use
+
+    # Continue along the trajectory into filtering using droplet UTILS
 
     # Adjust the metadata stats in the sce
 
-    # Filter the intact cells in the object
+    # Filter the merged unfiltered object
 
     print("making heatmaps")
     # Make the barcoding heatmaps

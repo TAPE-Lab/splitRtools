@@ -74,7 +74,7 @@ gen_split_sce <- function(
   return(sce_split)
 }
 
-#' @rdname label_sce_cdata
+#' @rdname label_sce_data
 #'
 #' @title intake raw SCE and label with cell metadata as colData
 #'
@@ -90,7 +90,7 @@ gen_split_sce <- function(
 #' @import scater
 #' @import dplyr
 #'
-label_sce_cdata <- function(sce_split,
+label_sce_data <- function(sce_split,
                             rt_bc_map,
                             lig_bc,
                             sample_map,
