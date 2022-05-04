@@ -30,7 +30,7 @@ run_split_pipe <- function(
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
 ){
-
+    start_time <- Sys.time()
     message("Running in single mode - single sublibrary input")
     message("Checking for directory structure")
 
@@ -232,26 +232,29 @@ run_split_pipe <- function(
                                    exp_name_list = exp_name_list,
                                    output_folder = output_folder_abs)
 
-    print(merge_sce)
-    print(table(merge_sce$sub_lib_id))
 
-    # Continue along the trajectory into filtering using droplet UTILS
-
-    # Adjust the metadata stats in the sce
-
-    # Filter the merged unfiltered object
+    # Filter the intact cells in the object with dropletUTILS
+    sce_split_lab_filt <- filter_split_sce(sce_split = merge_sce,
+                                           output_folder = output_folder_abs,
+                                           exp_name = merge_out_dir,
+                                           filtering_mode = filtering_mode,
+                                           filter_value = filter_value)
 
     print("making heatmaps")
-    # Make the barcoding heatmaps
-
-    # Make merged stats
+    # Make the heatmaps
+    generate_barcoding_heatmaps(sce_split = sce_split_lab_filt,
+                                output_folder = output_folder_abs,
+                                exp_name = merge_out_dir)
 
     # split_stats_write_function
 
-    # Generate initial dynamic UMAP data - TDL
 
     # create html report
 
+    end_time <- Sys.time()
+
+    total_time <- end_time - start_time
+    print(paste0("Pipeline complet in: ",total_time))
 
   } else {
 
