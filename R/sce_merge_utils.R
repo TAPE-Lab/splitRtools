@@ -35,9 +35,9 @@ merge_sce_sublibs <- function(merge_sce,
     merge_sce <- SingleCellExperiment::cbind(merge_sce, sce_split)
 
     # Add new fastq data to metadata
-    total_reads <- metadata(merge_sce)
-    total_reads <- cbind(total_reads, total_reads_sublib)
-    metadata(merge_sce) <- total_reads
+    total_reads <- metadata(merge_sce)[[1]]
+    total_reads <- rbind(total_reads, total_reads_sublib)
+    metadata(merge_sce) <- list(total_reads)
 
   }
 
