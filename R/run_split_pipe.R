@@ -216,21 +216,24 @@ run_split_pipe <- function(
     unfil_rds_path_1 <- paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds")
     sce_split <- readRDS(unfil_rds_path_1)
 
-    print(sce_split)
-
     # extract the fastq number from each SCE
     total_reads <- data.frame(sublib_id = sce_split$sub_lib_id[1],
                               total_reads = metadata(sce_split)$library_info[1,1])
 
     # Create the merged SCE
-    merge_sce <- sce_split
-    metadata(merge_sce) <- list(total_reads = total_reads)
+    merge_sce_init <- sce_split
+    metadata(merge_sce_init) <- list(total_reads = total_reads)
 
-    print(sce_split)
-    print(merge_sce)
+    rm(sce_split)
 
     # looping through the rest
     # merge the assay data and the metadata using sce_split to reduce memory use
+    merge_sce <- merge_sce_sublibs(merge_sce = merge_sce_init,
+                                   exp_name_list = exp_name_list,
+                                   output_folder = output_folder_abs)
+
+    print(merge_sce)
+    print(table(merge_sce$sub_lib_id))
 
     # Continue along the trajectory into filtering using droplet UTILS
 
