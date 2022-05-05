@@ -17,6 +17,8 @@
 # TODO
 # Could introduce some parrallelism into the single-mode
 # Test SCE2anndata as may preserve some additional functionality
+# Remove splitting by condition
+
 
 run_split_pipe <- function(
   mode = 'single',
@@ -170,7 +172,7 @@ run_split_pipe <- function(
                                      #   output_folder = output_folder_abs,
                                      #   exp_name = exp_name)
 
-      # split_stats_write_function
+      # split_stats_write_function to write complete objects to file
       write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt_stats,
                                      output_folder = output_folder_abs,
                                      exp_name = exp_name)
@@ -246,15 +248,21 @@ run_split_pipe <- function(
                                 output_folder = output_folder_abs,
                                 exp_name = merge_out_dir)
 
-    # split_stats_write_function
+    # sum all the read totals here?
 
+    # split_stats_gen_function need to adapt to the merge
+
+    # write the complete merged sce to file
+    write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt,
+                                   output_folder = output_folder_abs,
+                                   exp_name = merge_out_dir)
 
     # create html report
 
     end_time <- Sys.time()
 
-    total_time <- end_time - start_time
-    print(paste0("Pipeline complet in: ",total_time))
+    difference <- difftime(end_time, start_time, units='mins')
+    print(paste0("Pipeline completed in: ",difference))
 
   } else {
 

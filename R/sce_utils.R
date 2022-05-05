@@ -158,32 +158,6 @@ label_sce_data <- function(sce_split,
   # Add new colData
   sce_split$well_indexes <- cocat_well_pos
 
-  # If there are multiple samples
-  if(length(unique(sample_rt_layout$sample_id) > 1)){
-
-    samples <- unique(sample_rt_layout$sample_id)
-
-    # Write out per sample unfiltered sces
-    for(i in 1:length(samples)){
-
-      # Extract indices for sub-setting
-      idx <- which(sce_split$sample_id == samples[i])
-
-      # Subset based on each sample
-      sce_sub <- sce_split[,idx]
-
-      # write sce to rds file
-      saveRDS(sce_sub, file = paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",
-                                     exp_name,"_",samples[i],"_sce_unfiltered.rds"))
-
-      ## Write out as  H5AD for use in python
-      zellkonverter::writeH5AD(sce_sub, file = paste0(output_folder, '/',exp_name ,"/unfiltered/h5ad_objects/",
-                                                      exp_name,"_",samples[i],"_sce_unfiltered.h5ad"))
-
-
-    }
-  }
-
   # Save the object
   saveRDS(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds"))
   zellkonverter::writeH5AD(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/h5ad_objects/",exp_name,"_sce_unfiltered.h5ad"))
@@ -290,29 +264,6 @@ write_sce_split_lab_filt_stats <- function(sce_split,
   saveRDS(sce_split, file = paste0(output_folder, '/',exp_name ,"/filtered/sce_rds_objects/",exp_name,"_sce_filtered.rds"))
   zellkonverter::writeH5AD(sce_split, file = paste0(output_folder, '/',exp_name ,"/filtered/h5ad_objects/",exp_name,"_sce_filtered.h5ad"))
 
-  ## If there are multiple samples
-  if(length(unique(sce_split$sample_id) > 1)){
-
-    samples <- unique(sce_split$sample_id)
-
-    # Write out per sample filtered sces
-    for(i in 1:length(samples)){
-
-      # Extract indices for sub-setting
-      idx <- which(sce_split$sample_id == samples[i])
-
-      # Subset based on each sample
-      sce_sub <- sce_split[,idx]
-
-      # write sce to rds file
-      saveRDS(sce_sub, file = paste0(output_folder, '/',exp_name ,"/filtered/sce_rds_objects/",
-                                   exp_name,"_",samples[i],"_sce_filtered.rds"))
-
-      ## Write out as  H5AD for use in python
-      zellkonverter::writeH5AD(sce_sub, file = paste0(output_folder, '/',exp_name ,"/filtered/h5ad_objects/",
-                                         exp_name,"_",samples[i],"_sce_filtered.h5ad"))
-    }
-  }
   message("Annotated SCE objects written to file!!")
   return()
 
