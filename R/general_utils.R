@@ -74,7 +74,7 @@ get_seq_run_info <- function(total_reads,
 
 }
 
-#' @rdname sce_split_lab_filt_stats
+#' @rdname split_stats_output
 #'
 #' @title create sequencing run statistics for each sublibrary
 #'
@@ -176,7 +176,7 @@ split_stats_output <- function(sce_split,
       theme_classic() +
       theme(axis.text=element_text(size=15)) + ylab('Cell number recovered')
 
-    message("test_3")
+
     ggsave(plot = bar, filename = paste0(output_folder, '/',exp_name ,"/gplots/cell_abundance_barplot.png"),
            width = 3, height = 4)
 

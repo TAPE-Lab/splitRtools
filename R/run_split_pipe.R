@@ -248,12 +248,14 @@ run_split_pipe <- function(
                                 output_folder = output_folder_abs,
                                 exp_name = merge_out_dir)
 
-    # sum all the read totals here?
 
-    # split_stats_gen_function need to adapt to the merge
+    # split_stats_gen_function
+    sce_split_lab_filt_stats <- sce_merge_stats(sce_split = sce_split_lab_filt,
+                                                output_folder = output_folder_abs,
+                                                exp_name = merge_out_dir)
 
     # write the complete merged sce to file
-    write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt,
+    write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt_stats,
                                    output_folder = output_folder_abs,
                                    exp_name = merge_out_dir)
 
