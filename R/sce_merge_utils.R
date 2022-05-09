@@ -80,7 +80,7 @@ sce_merge_stats <- function(sce_split,
 
   # Generate the library level info
   split_run_stats <- data.frame(estimated_cell_n = ncol(sce_split),
-                                total_reads = metadata(sce_split)[[1]][1,1],
+                                total_reads = total_reads,
                                 estimated_reads_cells = total_reads/estimated_cell_n,
                                 median_umi = median(sce_split$sum),
                                 median_genes = median(sce_split$detected),
@@ -109,7 +109,7 @@ sce_merge_stats <- function(sce_split,
 
       # Create data frame
       split_sample_stats <- data.frame(estimated_cell_n = ncol(sce_sub),
-                                       total_reads = metadata(sce_split)[[1]][1,1],
+                                       total_reads = total_reads,
                                        estimated_reads_cells = NA,
                                        median_umi = median(sce_sub$sum),
                                        median_genes = median(sce_sub$detected),
