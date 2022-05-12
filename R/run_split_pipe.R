@@ -179,6 +179,10 @@ run_split_pipe <- function(
 
 
       # create html report
+      # Using something like this
+      #rrmarkdown::draft("dashboard.Rmd",
+      #                   outfile = "split_tools",
+      #                   package = "flexdashboard")
 
       }
     }
