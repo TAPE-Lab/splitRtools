@@ -37,4 +37,6 @@ The splitRtools package is designed to take as input data, the output from the [
 </br>
 A sample zUMIs pipeline with configuration to work with the Rosenberg-2019 barcode setup is available [here](https://github.com/JamesOpz/split_seq_zUMIs_pipeline). 
 
+## Running the splitRtools pipeline
+
 

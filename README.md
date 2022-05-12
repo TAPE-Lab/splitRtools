@@ -36,3 +36,5 @@ cellxcount matrix, as well as some reporting about the pipeline outputs.
 </br> </br> A sample zUMIs pipeline with configuration to work with the
 Rosenberg-2019 barcode setup is available
 [here](https://github.com/JamesOpz/split_seq_zUMIs_pipeline).
+
+## Running the splitRtools pipeline
