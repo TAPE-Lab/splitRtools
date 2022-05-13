@@ -87,4 +87,4 @@ to evaluate the initial quality of the SPLiT-seq scRNA-seq data. </br>
 `DropletUtils` package spline-fitting functionality or a user specified
 cutoff of transcripts. This produces the following waterfall plot along
 with quantifiaction of the cell types recovered by sample: </br> </br>
-<img src="3_umi_waterfall.png" width="500"><img src="cell_abundance_barplot.png" width="300">
+<img src="figs/3_umi_waterfall.png" width="400"><img src="figs/cell_abundance_barplot.png" width="200">
