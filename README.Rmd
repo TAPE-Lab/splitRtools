@@ -73,6 +73,14 @@ run_split_pipe(mode = 'merge', # Merge sublibraries or process seperately
 
 ### Output data
 
+The first stage of the pipeline labels converts the cell count matrix into a ```SingleCellExperiment``` object and labels each cell with various ```ColData``` with a series of well IDs based each stage of the barcoding process and the correspondence between the RT wells and the  on the ```sample_map``` excel file provided. This data is then stored as an ```SCE``` or an ```annData``` object in ```unfiltered/``` output folder for each sublibrary.</br>
+</br>
+
 ### Diagnostic plots
 
-The splitRtool pipeline will generate a set of diagnostic plots in order to evaluate the intial quality of the SPLiT-seq scRNA-seq data.
+The splitRtool pipeline will generate a set of diagnostic plots in order to evaluate the initial quality of the SPLiT-seq scRNA-seq data. </br>
+</br>
+After labeling the data is filtered using either the ```DropletUtils``` package spline-fitting functionality or a user specified cutoff of transcripts. This produces the following waterfall plot along with quantifiaction of the cell types recovered by sample: </br>
+</br>
+<img src="3_umi_waterfall.png" width="500"><img src="cell_abundance_barplot.png" width="300">
+
