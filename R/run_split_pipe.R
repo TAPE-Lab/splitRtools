@@ -263,7 +263,9 @@ run_split_pipe <- function(
                                    output_folder = output_folder_abs,
                                    exp_name = merge_out_dir)
 
-    # create html report
+    # Produce basic Seurat analysis for dynamic investigation
+
+    # create html report here
 
     end_time <- Sys.time()
 
