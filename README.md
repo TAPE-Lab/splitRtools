@@ -88,3 +88,9 @@ to evaluate the initial quality of the SPLiT-seq scRNA-seq data. </br>
 cutoff of transcripts. This produces the following waterfall plot along
 with quantifiaction of the cell types recovered by sample: </br> </br>
 <img src="figs/3_umi_waterfall.png" width="400"><img src="figs/cell_abundance_barplot.png" width="200">
+</br>  
+</br> The barcoding cell data is then mapped to the respective plate
+locations across the 3 barcoding rounds to provide a series of heatmaps
+displaying cells recovered per well and median UMI per cell across all
+wells: </br>
+<img src="figs/rt_barcoding_layout.png" width="425"><img src="figs/rt_umi_layout.png" width="425">
