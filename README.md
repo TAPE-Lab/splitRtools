@@ -1,15 +1,19 @@
-README
+splitRtools: Preprocessing tools for SPLiT-seq data
 ================
-james\_opzoomer
-26/04/2022
 
-# Welcome to the splitRtools package\!
+[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![](https://img.shields.io/badge/devel%20version-0.0.0.9000-blue.svg)](https://github.com/JamesOpz/splitRtools)
+[![](https://img.shields.io/github/languages/code-size/JamesOpz/splitRtools.svg)](https://github.com/JamesOpz/splitRtools)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
 
-## This package is under active development and all functionality is not yet validated\!\!
+# Welcome to the splitRtools package!
+
+## This package is under active development and all functionality is not yet validated!!
 
 ## The package may change significantly over development
 
-## Installation
+## :arrow\_double\_down: Installation
 
 The package can be installed from this github repository:
 
@@ -24,8 +28,8 @@ devtools::install_github("https://github.com/JamesOpz/splitRtools")
 ## Overview
 
 The splitRtools package is a collection of tools that are used to
-process SPLiT-seq scRNA-seq data ([Rosenberg
-et.al, 2019](https://www.science.org/doi/10.1126/science.aam8999?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed)).
+process SPLiT-seq scRNA-seq data ([Rosenberg et.al,
+2019](https://www.science.org/doi/10.1126/science.aam8999?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed)).
 </br> </br> The splitRtools package is designed to take as input data,
 the output from the [zUMIs package](https://github.com/sdparekh/zUMIs)
 ([paper](https://academic.oup.com/gigascience/article/7/6/giy059/5005022?login=true)).
@@ -87,10 +91,10 @@ to evaluate the initial quality of the SPLiT-seq scRNA-seq data. </br>
 `DropletUtils` package spline-fitting functionality or a user specified
 cutoff of transcripts. This produces the following waterfall plot along
 with quantifiaction of the cell types recovered by sample: </br> </br>
-<img src="figs/3_umi_waterfall.png" width="400"><img src="figs/cell_abundance_barplot.png" width="200">
+<img src="figs/3_umi_waterfall.png" width="380"><img src="figs/cell_abundance_barplot.png" width="200">
 </br>  
 </br> The barcoding cell data is then mapped to the respective plate
 locations across the 3 barcoding rounds to provide a series of heatmaps
 displaying cells recovered per well and median UMI per cell across all
 wells: </br>
-<img src="figs/rt_barcoding_layout.png" width="425"><img src="figs/rt_umi_layout.png" width="425">
+<img src="figs/rt_barcoding_layout.png" width="400"><img src="figs/rt_umi_layout.png" width="425">
