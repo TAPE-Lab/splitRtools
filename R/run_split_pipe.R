@@ -60,6 +60,8 @@ run_split_pipe <- function(
       if(mode == 'single'){
 
         message("Running in single sublib mode - sublibrary input analysed separately!")
+
+        exp_name_list <- list()
       }
 
       # If the merging the sublibs, create a list of unfiltered SCEs
