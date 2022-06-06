@@ -163,7 +163,7 @@ split_stats_output <- function(sce_split,
                                              "sequencing_stats.csv"))
 
     cell_sample_df <- split_run_stats[1, colnames(split_run_stats)[-1]]
-    print(cell_sample_df)
+    cell_sample_df <- as.data.frame(cell_sample_df)
     cell_sample_vec <- as.numeric(cell_sample_df[1,])
 
     # Call cell_n plotting function
