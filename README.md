@@ -2,7 +2,7 @@ splitRtools: Preprocessing tools for SPLiT-seq data
 ================
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/badge/devel%20version-0.0.0.9000-blue.svg)](https://github.com/JamesOpz/splitRtools)
+[![](https://img.shields.io/badge/devel%20version-0.0.1.0-blue.svg)](https://github.com/JamesOpz/splitRtools)
 [![](https://img.shields.io/github/languages/code-size/JamesOpz/splitRtools.svg)](https://github.com/JamesOpz/splitRtools)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
@@ -13,7 +13,7 @@ MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.
 
 ## The package may change significantly over development
 
-## :arrow\_double\_down: Installation
+## :arrow_double_down: Installation
 
 The package can be installed from this github repository:
 
