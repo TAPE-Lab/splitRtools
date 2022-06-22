@@ -9,6 +9,7 @@
 #' @return SCE output of the merged data object
 #'
 #' @import SingleCellExperiment
+#' @import singleCellTK
 
 merge_sce_sublibs <- function(merge_sce,
                               exp_name_list,
@@ -16,41 +17,35 @@ merge_sce_sublibs <- function(merge_sce,
 
   merge_out_dir <- "sub_lib_merged"
 
+  merge_sce_list <- list(merge_sce)
+
   # extract and append the rest of the list elements into the SCE
   for(i in 2:length(exp_name_list)){
 
-    # load the sce sublib
+    # load the sce sublibs as a list
     exp_name <- exp_name_list[[i]]
     unfil_rds_path <- paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds")
     sce_split <- readRDS(unfil_rds_path)
 
-    # extract the fastq info
-    total_reads_sublib <- data.frame(sublib_id = sce_split$sub_lib_id[1],
-                              total_reads = metadata(sce_split)$library_info[1,1])
-
-    # wipe the metadata
-    metadata(sce_split) <- list()
-
-    # combine
-    merge_sce <- SingleCellExperiment::cbind(merge_sce, sce_split)
-
-    # Add new fastq data to metadata
-    total_reads <- metadata(merge_sce)[[1]]
-    total_reads <- rbind(total_reads, total_reads_sublib)
-    metadata(merge_sce) <- list(total_reads)
+    # Create a list of SCEs to be merged
+    merge_sce_list <- append(merge_sce_list, sce_split)
 
   }
 
   # wipe the sce_split from active memory
   rm(sce_split)
 
+  # Merge the SCE list with singleCellTK
+  # This function doesn't work grrrrr
+  combined_sce <- singleCellTK::combineSCE(merge_sce_list)
+
   # Save the object
-  saveRDS(merge_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.rds"))
-  zellkonverter::writeH5AD(merge_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.h5ad"))
+  saveRDS(combined_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.rds"))
+  zellkonverter::writeH5AD(combined_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.h5ad"))
 
   message("Unfiltered merged SCE objects written to file!!")
 
-  return(merge_sce)
+  return(combined_sce)
 }
 
 #' @rdname sce_merge_stats
