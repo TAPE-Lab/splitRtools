@@ -47,7 +47,7 @@ A sample zUMIs pipeline with configuration to work with the Rosenberg-2019 barco
 
 ## Running the splitRtools pipeline
 
-### Data input directoruy structure
+### Data input directory structure
 
 ### Executing the pipeline
 

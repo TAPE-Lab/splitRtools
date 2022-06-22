@@ -42,7 +42,7 @@ Rosenberg-2019 barcode setup is available
 
 ## Running the splitRtools pipeline
 
-### Data input directoruy structure
+### Data input directory structure
 
 ### Executing the pipeline
 
