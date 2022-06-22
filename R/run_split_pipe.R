@@ -33,7 +33,7 @@ run_split_pipe <- function(
   sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
 ){
     start_time <- Sys.time()
-    message("Running in single mode - single sublibrary input")
+    message(paste0("Running pipeline config in mode - ",mode))
     message("Checking for directory structure")
 
     data_folder_abs = normalizePath(data_folder)
