@@ -2,7 +2,7 @@ splitRtools: Preprocessing tools for SPLiT-seq data
 ================
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/badge/devel%20version-0.0.1.0-blue.svg)](https://github.com/JamesOpz/splitRtools)
+[![](https://img.shields.io/badge/devel%20version-0.0.1.1-blue.svg)](https://github.com/JamesOpz/splitRtools)
 [![](https://img.shields.io/github/languages/code-size/JamesOpz/splitRtools.svg)](https://github.com/JamesOpz/splitRtools)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
@@ -43,6 +43,8 @@ Rosenberg-2019 barcode setup is available
 ## Running the splitRtools pipeline
 
 ### Data input directory structure
+
+split_tools depends on the naming of the zUMIs pipeline output
 
 ### Executing the pipeline
 
@@ -91,10 +93,10 @@ to evaluate the initial quality of the SPLiT-seq scRNA-seq data. </br>
 `DropletUtils` package spline-fitting functionality or a user specified
 cutoff of transcripts. This produces the following waterfall plot along
 with quantifiaction of the cell types recovered by sample: </br> </br>
-<img src="figs/3_umi_waterfall.png" width="380"><img src="figs/cell_abundance_barplot.png" width="200">
+<img src="data/3_umi_waterfall.png" width="380"><img src="data/cell_abundance_barplot.png" width="200">
 </br>  
 </br> The barcoding cell data is then mapped to the respective plate
 locations across the 3 barcoding rounds to provide a series of heatmaps
 displaying cells recovered per well and median UMI per cell across all
 wells: </br>
-<img src="figs/rt_barcoding_layout.png" width="400"><img src="figs/rt_umi_layout.png" width="425">
+<img src="data/rt_barcoding_layout.png" width="400"><img src="data/rt_umi_layout.png" width="425">

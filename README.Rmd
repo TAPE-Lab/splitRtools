@@ -49,6 +49,8 @@ A sample zUMIs pipeline with configuration to work with the Rosenberg-2019 barco
 
 ### Data input directory structure
 
+split_tools depends on the naming of the zUMIs pipeline output
+
 ### Executing the pipeline
 
 The splitRtools pipeline is run through the ```run_split_pipe()``` function, which acts as a wrapper function to execute the pipeline. A basic setup for the pipeline is as follows: </br>
@@ -90,9 +92,9 @@ The splitRtool pipeline will generate a set of diagnostic plots in order to eval
 </br>
 After labeling the data is filtered using either the ```DropletUtils``` package spline-fitting functionality or a user specified cutoff of transcripts. This produces the following waterfall plot along with quantifiaction of the cell types recovered by sample: </br>
 </br>
-<img src="figs/3_umi_waterfall.png" width="380"><img src="figs/cell_abundance_barplot.png" width="200">
+<img src="data/3_umi_waterfall.png" width="380"><img src="data/cell_abundance_barplot.png" width="200">
 </br>   
 </br> 
 The barcoding cell data is then mapped to the respective plate locations across the 3 barcoding rounds to provide a series of heatmaps displaying cells recovered per well and median UMI per cell across all wells:
 </br>
-<img src="figs/rt_barcoding_layout.png" width="400"><img src="figs/rt_umi_layout.png" width="425">
+<img src="data/rt_barcoding_layout.png" width="400"><img src="data/rt_umi_layout.png" width="425">
