@@ -50,9 +50,9 @@ gen_split_sce <- function(
 
   message("SCE created!")
 
-  # Stash the ENMUS IDs and re-assign gene names
+  # Stash the Gene IDs and re-assign gene names
   message("Stashing gene_ids for gene names")
-  row_data <- data.frame(enmus_gene_ids = rownames(sce_split))
+  row_data <- data.frame(gene_ids = rownames(sce_split))
   rowData(sce_split) <- row_data
   gene_names_df$gene_name <- tolower(gene_names_df$gene_name)
   gene_names_df$gene_name <- make.names(gene_names_df$gene_name, unique = TRUE)
