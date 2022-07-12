@@ -9,7 +9,6 @@
 #' @return SCE output of the merged data object
 #'
 #' @import SingleCellExperiment
-#' @import singleCellTK
 
 merge_sce_sublibs <- function(merge_sce,
                               exp_name_list,
@@ -37,7 +36,7 @@ merge_sce_sublibs <- function(merge_sce,
 
   # Merge the SCE list with singleCellTK
   # This function doesn't work grrrrr
-  combined_sce <- singleCellTK::combineSCE(merge_sce_list)
+  # combined_sce <- singleCellTK::combineSCE(merge_sce_list)
 
   # Save the object
   saveRDS(combined_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.rds"))
