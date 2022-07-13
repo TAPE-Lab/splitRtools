@@ -216,28 +216,8 @@ run_split_pipe <- function(
 
     }
 
-    # Take the list of SCEs that were generate earlier in single mode
-    # Holding all the sce objects in active memory is really inefficient
-    # Therefore read them in from file .rds using dirs one at a time
-    # starting with 1
-    exp_name <- exp_name_list[[1]]
-    unfil_rds_path_1 <- paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds")
-    sce_split <- readRDS(unfil_rds_path_1)
-
-    # extract the fastq number from each SCE
-    total_reads <- data.frame(sublib_id = sce_split$sub_lib_id[1],
-                              total_reads = metadata(sce_split)$library_info[1,1])
-
-    # Create the merged SCE
-    merge_sce_init <- sce_split
-    metadata(merge_sce_init) <- list(total_reads = total_reads)
-
-    rm(sce_split)
-
-    # looping through the rest
-    # merge the assay data and the metadata using sce_split to reduce memory use
-    merge_sce <- merge_sce_sublibs(merge_sce = merge_sce_init,
-                                   exp_name_list = exp_name_list,
+    # Take the SCEs that were generate earlier in single mode
+    merge_sce <- merge_sce_sublibs(exp_name_list = exp_name_list,
                                    output_folder = output_folder_abs)
 
 
@@ -250,6 +230,7 @@ run_split_pipe <- function(
 
     print("making heatmaps")
     # Make the heatmaps
+    # This doesn't work anymore, need a count based approach
     generate_barcoding_heatmaps(sce_split = sce_split_lab_filt,
                                 output_folder = output_folder_abs,
                                 exp_name = merge_out_dir)

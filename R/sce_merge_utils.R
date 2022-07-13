@@ -10,52 +10,67 @@
 #'
 #' @import SingleCellExperiment
 
-merge_sce_sublibs <- function(merge_sce,
-                              exp_name_list,
+merge_sce_sublibs <- function(exp_name_list,
                               output_folder){
 
   merge_out_dir <- "sub_lib_merged"
 
-  merge_sce_list <- list(merge_sce)
+  # Initialize empty litst for filling
+  merge_counts_mtx_list <- list()
+  merge_reads_mtx_list <- list()
+
+  # ColData dataframe
+  sce_coldata <- data.frame()
+
+  # Create new the metadata
+  total_reads <- data.frame(sublib_reads = c())
 
   # extract and append the rest of the list elements into the SCE
-  for(i in 2:length(exp_name_list)){
+  for(i in 1:length(exp_name_list)){
+
+    message(paste0("collecting sublib: ", exp_name_list[[i]]," data!"))
 
     # load the sce sublibs as a list
     exp_name <- exp_name_list[[i]]
     unfil_rds_path <- paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds")
     sce_split <- readRDS(unfil_rds_path)
 
-    # Create a list of SCEs to be merged
-    merge_sce_list <- append(merge_sce_list, sce_split)
+    # Create a list of counts mtx to be merged
+    merge_counts_mtx_list <- append(merge_counts_mtx_list, SummarizedExperiment::assay(sce_split, 'counts'))
+    merge_reads_mtx_list <- append(merge_reads_mtx_list, SummarizedExperiment::assay(sce_split, 'reads'))
 
-    # Extract the metadata
+    # Extract the colData
+    sce_coldata <- rbind(sce_coldata, as.data.frame(colData(sce_split)))
+
+    # extract reads
+    lib_reads <- data.frame(sublib_reads = metadata(sce_split)[[1]][1,1])
+    total_reads <- rbind(total_reads, lib_reads)
 
   }
 
   # wipe the sce_split from active memory
   rm(sce_split)
 
-  # Run the sce_cbind function
-  # This intersects the two datasets which will ultimately create problems filtering out undetected genes.
-  # The ideal behaviour is to unionize the two dcgmatrices, but
-  # When made dense R runs out of vector memory
-  combined_sce <- scMerge::sce_cbind(sce_list = merge_sce_list,
-                                              method = "intersect",
-                                              cut_off_batch = 0.00,
-                                              cut_off_overall = 0.00,
-                                              exprs = c("counts", "reads"),
-                                              colData_names = c("sub_lib_id", "sample_id",
-                                                                "well_indexes"),
-                                              batch_names = NULL)
+  message("Merging sparse matrices")
+  # Merge the sparse matrices
+  counts_merged_mtx <- merge_sparse(merge_counts_mtx_list)
+  reads_merged_mtx <- merge_sparse(merge_reads_mtx_list)
 
-  # re-apply the metadata
+  # Format metadata
+  t_reads <- list(total_reads)
+
+  message("Forming new merged SCE")
+  # Reform the SCE
+  combined_sce <- SingleCellExperiment(assays=list(counts=counts_merged_mtx,
+                                                   reads=reads_merged_mtx),
+                                       colData=sce_coldata,
+                                       metadata=t_reads)
 
   # Save the object
   saveRDS(combined_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.rds"))
   zellkonverter::writeH5AD(combined_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.h5ad"))
 
-  message("Unfiltered merged SCE objects written to file!!")
+  message("Unfiltered MERGED SCE objects written to file!! Almost there!!")
 
   return(combined_sce)
 }
@@ -171,9 +186,9 @@ sce_merge_stats <- function(sce_split,
 
 #' @rdname merge_sparse
 #'
-#' @title Merge sparse matrices for SCE mergine
+#' @title Merge sparse matrices for SCE merging
 #'
-#' @param  ... a series of sparse matrices to merge into one
+#' @param  sce_list a list of sparse matrices to merge into one
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
@@ -181,7 +196,7 @@ sce_merge_stats <- function(sce_split,
 #'
 #' @import Matrix
 #'
-merge_sparse <- function(...) {
+merge_sparse <- function(mtx_list) {
 
   cnnew <- character()
   rnnew <- character()
@@ -189,7 +204,7 @@ merge_sparse <- function(...) {
   i <- numeric()
   j <- numeric()
 
-  for (M in list(...)) {
+  for (M in mtx_list) {
 
     cnold <- colnames(M)
     rnold <- rownames(M)
@@ -205,6 +220,7 @@ merge_sparse <- function(...) {
     x <- c(x,M@x)
   }
 
-  sparseMatrix(i=i,j=j,x=x,dims=c(length(rnnew),length(cnnew)),dimnames=list(rnnew,cnnew))
+  new_matrix <- sparseMatrix(i=i,j=j,x=x,dims=c(length(rnnew),length(cnnew)),dimnames=list(rnnew,cnnew))
+  return(new_matrix)
 }
 
