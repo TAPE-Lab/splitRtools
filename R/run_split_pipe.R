@@ -15,10 +15,9 @@
 # There is a bug where two lines are added to each SCE lib info metadata slot
 
 # TODO
-# Could introduce some parrallelism into the single-mode
-# Test SCE2anndata as may preserve some additional functionality
-# Remove splitting by condition
 
+# renamed the cell_names to include sublib indexes as there will be conflicts
+# Test SCE2anndata with py_pickle as may preserve some additional functionality
 
 run_split_pipe <- function(
   mode = 'single',
@@ -144,7 +143,8 @@ run_split_pipe <- function(
                                       lig_bc = lig_bc,
                                       sample_map = sample_map,
                                       output_folder = output_folder_abs,
-                                      exp_name = exp_name)
+                                      exp_name = exp_name,
+                                      sub_lib_index = paste0("s",i))
 
 
       # Filter the intact cells in the object with dropletUTILS

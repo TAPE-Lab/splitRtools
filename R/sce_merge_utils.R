@@ -29,14 +29,27 @@ merge_sce_sublibs <- function(merge_sce,
     # Create a list of SCEs to be merged
     merge_sce_list <- append(merge_sce_list, sce_split)
 
+    # Extract the metadata
+
   }
 
   # wipe the sce_split from active memory
   rm(sce_split)
 
-  # Merge the SCE list with singleCellTK
-  # This function doesn't work grrrrr
-  # combined_sce <- singleCellTK::combineSCE(merge_sce_list)
+  # Run the sce_cbind function
+  # This intersects the two datasets which will ultimately create problems filtering out undetected genes.
+  # The ideal behaviour is to unionize the two dcgmatrices, but
+  # When made dense R runs out of vector memory
+  combined_sce <- scMerge::sce_cbind(sce_list = merge_sce_list,
+                                              method = "intersect",
+                                              cut_off_batch = 0.00,
+                                              cut_off_overall = 0.00,
+                                              exprs = c("counts", "reads"),
+                                              colData_names = c("sub_lib_id", "sample_id",
+                                                                "well_indexes"),
+                                              batch_names = NULL)
+
+  # re-apply the metadata
 
   # Save the object
   saveRDS(combined_sce, file = paste0(output_folder, '/',merge_out_dir ,"/unfiltered/",merge_out_dir,"_sce_unfiltered.rds"))
