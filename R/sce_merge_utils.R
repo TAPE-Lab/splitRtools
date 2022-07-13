@@ -169,4 +169,42 @@ sce_merge_stats <- function(sce_split,
 }
 
 
+#' @rdname merge_sparse
+#'
+#' @title Merge sparse matrices for SCE mergine
+#'
+#' @param  ... a series of sparse matrices to merge into one
+#'
+#' @author James Opzoomer \email{james.opzoomer@gmail.com}
+#'
+#' @return a combined sparse matrix object
+#'
+#' @import Matrix
+#'
+merge_sparse <- function(...) {
+
+  cnnew <- character()
+  rnnew <- character()
+  x <- vector()
+  i <- numeric()
+  j <- numeric()
+
+  for (M in list(...)) {
+
+    cnold <- colnames(M)
+    rnold <- rownames(M)
+
+    cnnew <- union(cnnew,cnold)
+    rnnew <- union(rnnew,rnold)
+
+    cindnew <- match(cnold,cnnew)
+    rindnew <- match(rnold,rnnew)
+    ind <- unname(which(M != 0,arr.ind=T))
+    i <- c(i,rindnew[ind[,1]])
+    j <- c(j,cindnew[ind[,2]])
+    x <- c(x,M@x)
+  }
+
+  sparseMatrix(i=i,j=j,x=x,dims=c(length(rnnew),length(cnnew)),dimnames=list(rnnew,cnnew))
+}
 
