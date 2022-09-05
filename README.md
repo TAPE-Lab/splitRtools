@@ -18,11 +18,11 @@ MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.
 The package can be installed from this github repository:
 
 ``` r
-# Insall BiocManafer if not present
+# Insall BiocManager if not present
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-# Install required bioconductor packages 
+# Install required Bioconductor packages 
 BiocManager::install(c("zellkonverter", "ShortRead", "scater", "DropletUtils",
                         "ComplexHeatmap"))
 
