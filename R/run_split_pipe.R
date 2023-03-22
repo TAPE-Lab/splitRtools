@@ -60,17 +60,18 @@ run_split_pipe <- function(
 
         message("Running in single sublib mode - sublibrary input analysed separately!")
 
-        exp_name_list <- list()
       }
 
       # If the merging the sublibs, create a list of unfiltered SCEs
       # These will be used later to add in the SCEs processed one at a time
       if(mode == 'merge'){
 
-        # initialize the exp_name lists for merging later
-        exp_name_list <- list()
+        message("Running in multi sublib mode - sublibrary input analysed separately and then merged!")
 
       }
+
+      # initialize the exp_name lists for merging later
+      exp_name_list <- list()
 
       for(i in 1:length(dirs)){
 
