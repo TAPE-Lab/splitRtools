@@ -11,7 +11,6 @@
 #' @import SingleCellExperiment
 #' @import readr
 #' @import Matrix
-#' @import zellkonverter
 #'
 # To do:
 # Need to auto find the relevant files

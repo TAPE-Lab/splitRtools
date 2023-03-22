@@ -29,7 +29,7 @@ get_read_count <- function(fastq_path
 #'
 #' @title extract total raw reads
 #'
-#' @param fastq_path A string representing the raw FastQ path
+#' @param total_reads The total reads from the sequnecing library
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'

@@ -26,10 +26,12 @@ run_split_pipe <- function(
   output_folder,
   filtering_mode = "knee",
   filter_value = 1000,
-  fastq_path, # change to extraction nextSeq_log
+  fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
+  count_reads = FALSE,
+  total_reads
 ){
     start_time <- Sys.time()
     message(paste0("Running pipeline config in mode - ",mode))
@@ -75,11 +77,7 @@ run_split_pipe <- function(
 
       for(i in 1:length(dirs)){
 
-      message(paste0("extracting raw data from sublibrary -- ", dirs[i]))
-
-      # Check the directory structure of the sublibrary path
-      # So that all files exits otherwise exit
-      # TODO
+      message(paste0("extracting zUMIs data from sublibrary -- ", dirs[i]))
 
       # Extract the experiment name from the sublib_folder
       exp_name <- rev(stringr::str_split(dirs[i], pattern = "/")[[1]])[1]
@@ -100,12 +98,20 @@ run_split_pipe <- function(
       # Exctract the FASTQ path
       # TODO function
 
-      fastq_path_dir <- normalizePath(fastq_path)
+      # If reads to be counted
+      if(count_reads == TRUE){
 
-      fastq_path_abs <- paste0(fastq_path_dir, "/", exp_name)
+        # Exctract the FASTQ path
+        fastq_path_dir <- normalizePath(fastq_path)
 
-      # Extract the total raw read info
-      total_reads <- get_read_count(fastq_path = fastq_path_abs)
+        # Append the identical name as the sublib folder
+        fastq_path_abs <- paste0(fastq_path_dir, "/", exp_name)
+
+        # Extract the total raw read info
+        # Found in general_utils.R
+        total_reads <- get_read_count(fastq_path = fastq_path_abs)
+
+      }
 
       # Plot the raw reads -- this is edited out for time
       # This takes a really long time and need to be modified
@@ -118,10 +124,11 @@ run_split_pipe <- function(
       # TODO
 
       # Get the overall run_stats
+      # Found in general_utils.R
       library_stats_df <- get_seq_run_info(total_reads = total_reads,
-                                       sub_lib_fp = dirs[i],
-                                       output_folder = output_folder_abs,
-                                       exp_name = exp_name)
+                                      sub_lib_fp = dirs[i],
+                                      output_folder = output_folder_abs,
+                                      exp_name = exp_name)
 
       # Get the dge_mtx
       dge_mtx_fp <- paste0(exp_name, ".dgecounts.rds")
@@ -131,6 +138,7 @@ run_split_pipe <- function(
 
 
       # create the unfiltered SCE object
+      # Found in sce_utils.R
       sce_split = gen_split_sce(sub_lib_fp = dirs[i],
                                 output_folder = output_folder_abs,
                                 dge_mtx = dge_mtx_fp,
