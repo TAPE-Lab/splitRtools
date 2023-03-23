@@ -210,26 +210,26 @@ filter_split_sce <- function(sce_split,
   # Extract the data for plotting
   br.out_df <- as.data.frame(br.out)
 
-  # Waterfall transcripts per cell
-  wfall_reads_fil <- ggplot(br.out_df, aes(x = rank, y = total)) +
-    geom_point(size=0.8) +
-    scale_x_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
-                  labels = scales::trans_format("log10", scales::math_format(10^.x))) +
-    scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
-                  labels = scales::trans_format("log10", scales::math_format(10^.x))) +
-    geom_hline(yintercept=metadata(br.out)$knee, linetype="dashed", color="dodgerblue") +
-    geom_text(aes(2,metadata(br.out)$knee,label = paste0("Knee point: ", metadata(br.out)$knee), vjust = +1), color="dodgerblue") +
-    xlab("Log Barcode Rank") + ylab("UMI count per cell")
-
-
-  ggsave(plot = wfall_reads_fil, paste0(output_folder, '/',exp_name ,"/gplots/3_umi_waterfall.png"),
-         device = "png", width = 7.22, height = 7.22)
-
   if(filtering_mode == "knee"){
 
     message("filtering by knee cutoff")
 
     sce_split_filter <- sce_split[, j = (sce_split$sum > metadata(br.out)$inflection)]
+
+    # Waterfall transcripts per cell
+    wfall_reads_fil <- ggplot(br.out_df, aes(x = rank, y = total)) +
+      geom_point(size=0.8) +
+      scale_x_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
+                    labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+      scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
+                    labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+      geom_hline(yintercept=metadata(br.out)$knee, linetype="dashed", color="dodgerblue") +
+      geom_text(aes(3,metadata(br.out)$knee,label = paste0("Knee point: ", metadata(br.out)$knee), vjust = +1.5), color="dodgerblue") +
+      xlab("Log Barcode Rank") + ylab("UMI count per cell")
+
+
+    ggsave(plot = wfall_reads_fil, paste0(output_folder, '/',exp_name ,"/gplots/3_umi_waterfall.png"),
+           device = "png", width = 7.22, height = 7.22)
 
   }
 
@@ -238,6 +238,21 @@ filter_split_sce <- function(sce_split,
     message("filtering by manual cutoff")
 
     sce_split_filter <- sce_split[, j = (sce_split$sum > filter_value)]
+
+    # Waterfall transcripts per cell
+    wfall_reads_fil <- ggplot(br.out_df, aes(x = rank, y = total)) +
+      geom_point(size=0.8) +
+      scale_x_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
+                    labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+      scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
+                    labels = scales::trans_format("log10", scales::math_format(10^.x))) +
+      geom_hline(yintercept=filter_value, linetype="dashed", color="dodgerblue") +
+      geom_text(aes(3,filter_value,label = paste0("Filter point: ", filter_value, vjust = +1.5), color="dodgerblue") +
+      xlab("Log Barcode Rank") + ylab("UMI count per cell")
+
+
+    ggsave(plot = wfall_reads_fil, paste0(output_folder, '/',exp_name ,"/gplots/3_umi_waterfall.png"),
+           device = "png", width = 7.22, height = 7.22)
 
   }else{message("Filtering condition not recognised!")
          message("Please use either knee or manual (with manual tscp cutoff)")}
