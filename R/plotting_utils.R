@@ -72,7 +72,7 @@ generate_barcoding_heatmaps <- function(sce_split,
   # 1) Count information
   # 2) UMI information
 
-  # Extract count information by unzipping well info
+  # Extract count information by splitting well info by _
   well_locs <- sce_split$well_indexes
   well_locs_list <- stringr::str_split(well_locs, pattern = "_")
   rt_locs <- as.numeric(sapply(well_locs_list, "[[", 1))
@@ -81,15 +81,13 @@ generate_barcoding_heatmaps <- function(sce_split,
 
   #################### count information #####################################
 
-  # extract the counts, reorder and identify and fill in 0s
-  rt_counts_layout <- data.frame("well_position" = NULL, counts = NULL)
+  # Create a dataframe from the count object
+  rt_counts_layout <- data.frame(well_position = 1:48, counts = 0)
 
-  for(i in 1:48){
-    count = table(rt_locs)[names(table(rt_locs)) == i] # Count number of elements equal to certain value
-    if(length(count)==0){count = 0}
-    count_row = data.frame("well_position" = i, counts = count)
-    rt_counts_layout = rbind(rt_counts_layout, count_row)
-  }
+  counts <- table(rt_locs)
+
+  # Count the occurrence of the numbers
+  rt_counts_layout$counts[match(names(counts), df$well_position)] <- as.numeric(counts)
 
   # Convert into a x by x matrix for plotting
   # RT is 4x12

@@ -167,6 +167,7 @@ run_split_pipe <- function(
 
       print("making heatmaps")
       # Make the heatmaps
+      # Found in plotting_util.R
       generate_barcoding_heatmaps(sce_split = sce_split_lab_filt,
                                   output_folder = output_folder_abs,
                                   exp_name = exp_name)
