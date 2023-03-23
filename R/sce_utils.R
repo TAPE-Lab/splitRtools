@@ -218,8 +218,8 @@ filter_split_sce <- function(sce_split,
     scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                   labels = scales::trans_format("log10", scales::math_format(10^.x))) +
     geom_hline(yintercept=metadata(br.out)$knee, linetype="dashed", color="dodgerblue") +
-    geom_hline(yintercept=metadata(br.out)$inflection, linetype="dashed", color="forestgreen") +
-    xlab("Barcode Rank") + ylab("UMI count per cell")
+    geom_text(aes(0,metadata(br.out)$knee,label = paste0("Knee point: ", metadata(br.out)$knee), vjust = -1, color="dodgerblue")) +
+    xlab("Log Barcode Rank") + ylab("UMI count per cell")
 
 
   ggsave(plot = wfall_reads_fil, paste0(output_folder, '/',exp_name ,"/gplots/3_umi_waterfall.png"),

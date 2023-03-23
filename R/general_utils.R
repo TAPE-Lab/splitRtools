@@ -217,7 +217,7 @@ split_stats_output <- function(sce_split,
     bar2 <- ggplot2::ggplot(data=split_reads_filtering_gplot, aes(x=sublibrary, y=library_proportion, fill=quality_filter)) +
       geom_bar(stat="identity", color="black") +
       scale_fill_manual(values = RColorBrewer::brewer.pal(6, "Dark2")) + theme_classic() +
-      theme(axis.text=element_text(size=15)) + ylab('Cell number recovered')
+      theme(axis.text=element_text(size=15)) + ylab('Fraction of total reads')
 
     # write data to csv
     ggsave(plot = bar2, filename = paste0(output_folder, '/',exp_name ,"/gplots/seq_run_filtering.png"),

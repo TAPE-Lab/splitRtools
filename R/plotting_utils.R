@@ -64,6 +64,8 @@ generate_barcoding_heatmaps <- function(sce_split,
                                         output_folder,
                                         exp_name){
 
+  # This is currently cusing errors in with the v2 libraries
+
   message("Generating QC heatmaps on filtered objects.")
 
   # Extract the barcoding:

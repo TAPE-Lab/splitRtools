@@ -158,6 +158,7 @@ run_split_pipe <- function(
 
 
       # Filter the intact cells in the object with dropletUTILS
+      # Found in sce_utils.R
       sce_split_lab_filt <- filter_split_sce(sce_split = sce_split_lab,
                                              output_folder = output_folder_abs,
                                              exp_name = exp_name,
