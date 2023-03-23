@@ -116,14 +116,14 @@ generate_barcoding_heatmaps <- function(sce_split,
 
 
   # Ligation 1 is 8x12
-  r1_counts_layout <- data.frame("well_position" = NULL, counts = NULL)
 
-  for(i in 1:96){
-    count = table(r1_locs)[names(table(r1_locs)) == i] # Count number of elements equal to certain value
-    if(length(count)==0){count = 0}
-    count_row = data.frame("well_position" = i, counts = count)
-    r1_counts_layout = rbind(r1_counts_layout, count_row)
-  }
+  # Create a dataframe from the count object
+  r1_counts_layout <- data.frame(well_position = 1:96, counts = 0)
+
+  counts_r1 <- table(r1_locs)
+
+  # Count the occurrence of the numbers
+  r1_counts_layout$counts[match(names(counts_r1), r1_counts_layout$well_position)] <- as.numeric(counts_r1)
 
   r1_loc_mat <- matrix(r1_counts_layout$counts, nrow = 8, ncol = 12, byrow = TRUE)
 
@@ -131,6 +131,7 @@ generate_barcoding_heatmaps <- function(sce_split,
   pal_1 <- colorRamp2(c(0,1,max(r1_counts_layout$counts)), c("gray", "floralwhite", "forestgreen"))
 
   message("writing RT heatmap!")
+
   # Heatmap
   png(file=paste0(output_folder, '/',exp_name ,"/gplots/ligation_1_barcoding_layout.png"),
       res = 400, width = 15, height = 10, units = "cm")
@@ -147,18 +148,20 @@ generate_barcoding_heatmaps <- function(sce_split,
   dev.off()
 
   # Ligation 2 is 8x12
-  r2_counts_layout <- data.frame("well_position" = NULL, counts = NULL)
 
-  for(i in 1:96){
-    count = table(r2_locs)[names(table(r2_locs)) == i] # Count number of elements equal to certain value
-    if(length(count)==0){count = 0}
-    count_row = data.frame("well_position" = i, counts = count)
-    r2_counts_layout = rbind(r2_counts_layout, count_row)
-  }
+  # Create a dataframe from the count object
+  r2_counts_layout <- data.frame(well_position = 1:96, counts = 0)
 
+  counts_r2 <- table(r2_locs)
+
+  # Count the occurrence of the numbers
+  r2_counts_layout$counts[match(names(counts_r2), r2_counts_layout$well_position)] <- as.numeric(counts_r2)
+
+
+  # Format as 96 well plate matrix
   r2_loc_mat <- matrix(r2_counts_layout$counts, nrow = 8, ncol = 12, byrow = TRUE)
 
-  # Counts pal
+  # Counts pallete
   pal_1 <- colorRamp2(c(0,1,max(r2_counts_layout$counts)), c("gray", "floralwhite", "forestgreen"))
 
   # Heatmap
