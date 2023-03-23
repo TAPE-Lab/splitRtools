@@ -118,6 +118,7 @@ split_stats_output <- function(sce_split,
     colnames(split_run_stats) <- "all_wells"
 
     if(length(unique(sce_split$sample_id) > 1)){
+
     # Perform for each sub-sample
     for(i in 1:length(unique(sce_split$sample_id))){
 

@@ -174,6 +174,7 @@ run_split_pipe <- function(
       print("making stats")
       # Generate read level and cell statistics summary
       # Taking the filtered sce as input
+      # Found in general_utils.R
       sce_split_lab_filt_stats <- split_stats_output(sce_split = sce_split_lab_filt,
                                                      output_folder = output_folder_abs,
                                                      exp_name = exp_name)
@@ -186,6 +187,7 @@ run_split_pipe <- function(
                                      #   exp_name = exp_name)
 
       # split_stats_write_function to write complete objects to file
+      # Found in sce_utils.R
       write_sce_split_lab_filt_stats(sce_split = sce_split_lab_filt_stats,
                                      output_folder = output_folder_abs,
                                      exp_name = exp_name)
@@ -258,21 +260,15 @@ run_split_pipe <- function(
                                    exp_name = merge_out_dir)
 
     # Produce basic Seurat analysis for dynamic investigation
-
     # create html report here
+
+  }
 
     end_time <- Sys.time()
 
     difference <- difftime(end_time, start_time, units='mins')
     print(paste0("Pipeline completed in: ",round(difference, digits = 2), ' minutes'))
 
-  } else {
-
-    warning("Mode not recognised please choose from - sinlge or merge")
-    warning("Single - process sublibraries independantly")
-    warning("merge - merge sublibrary output into one sce object")
-    warning("Exiting")
-
     return()
-  }
+
 }
