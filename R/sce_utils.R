@@ -98,6 +98,7 @@ label_sce_data <- function(sce_split,
                             sub_lib_index
 ){
 
+  # Add per cell QC data
   sce_split <- scater::addPerCellQC(sce_split)
 
   # Barcode-info
@@ -172,6 +173,7 @@ label_sce_data <- function(sce_split,
 
   message("Unfiltered SCE objects written to file!!")
 
+  # Return the SCE object
   return(sce_split)
 
 

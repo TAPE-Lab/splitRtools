@@ -2,7 +2,7 @@
 #'
 #' @title Run the split-seq pipeline
 #'
-#' @param mode a string of either 'single' or 'merge'
+#' @param mode a string of either 'single' or 'merge', this will determine whether to process each sublibrary separately or in 'merge' mode do this and then process all the sublibraries combined together.
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
@@ -147,13 +147,14 @@ run_split_pipe <- function(
                                 library_stats_df = library_stats_df)
 
       # Label the sce with sample and sublibrary metadata
+      # Found in sce_utils.R
       sce_split_lab <- label_sce_data(sce_split = sce_split,
                                       rt_bc_map = rt_bc,
                                       lig_bc = lig_bc,
                                       sample_map = sample_map,
                                       output_folder = output_folder_abs,
                                       exp_name = exp_name,
-                                      sub_lib_index = paste0("s",i))
+                                      sub_lib_index = dirs[i]
 
 
       # Filter the intact cells in the object with dropletUTILS
