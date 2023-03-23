@@ -15,7 +15,7 @@ merge_sce_sublibs <- function(exp_name_list,
 
   merge_out_dir <- "sub_lib_merged"
 
-  # Initialize empty litst for filling
+  # Initialize empty list for filling
   merge_counts_mtx_list <- list()
   merge_reads_mtx_list <- list()
 

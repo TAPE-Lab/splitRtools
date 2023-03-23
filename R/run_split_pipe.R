@@ -153,8 +153,7 @@ run_split_pipe <- function(
                                       lig_bc = lig_bc,
                                       sample_map = sample_map,
                                       output_folder = output_folder_abs,
-                                      exp_name = exp_name,
-                                      sub_lib_index = dirs[i])
+                                      exp_name = exp_name)
 
 
       # Filter the intact cells in the object with dropletUTILS

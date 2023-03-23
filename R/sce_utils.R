@@ -94,8 +94,7 @@ label_sce_data <- function(sce_split,
                             lig_bc,
                             sample_map,
                             output_folder,
-                            exp_name,
-                            sub_lib_index
+                            exp_name
 ){
 
   # Add per cell QC data
@@ -155,10 +154,10 @@ label_sce_data <- function(sce_split,
   r3_well_position <- lig_bc$well_position[mm_r3]
 
   # Sublibrary processing index
-  sub_lib_idx_vec <- rep(sub_lib_index, length(r3_well_position))
+  sub_lib_idx_vec <- rep(exp_name, length(r3_well_position))
 
   # Cocat the names
-  cocat_well_pos <- paste(rt_well_position, r2_well_position, r3_well_position, sub_lib_idx_vec, sep = "_")
+  cocat_well_pos <- paste(rt_well_position, r2_well_position, r3_well_position, sep = "_")
 
   # Add new colData
   sce_split$well_indexes <- cocat_well_pos
