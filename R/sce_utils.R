@@ -247,7 +247,7 @@ filter_split_sce <- function(sce_split,
       scale_y_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
                     labels = scales::trans_format("log10", scales::math_format(10^.x))) +
       geom_hline(yintercept=filter_value, linetype="dashed", color="dodgerblue") +
-      geom_text(aes(3,filter_value,label = paste0("Filter point: ", filter_value, vjust = +1.5), color="dodgerblue") +
+      geom_text(aes(3,filter_value,label = paste0("Filter point: ", filter_value), vjust = +1.5), color="dodgerblue") +
       xlab("Log Barcode Rank") + ylab("UMI count per cell")
 
 
