@@ -29,7 +29,7 @@ run_split_pipe <- function(
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
-  sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
+  sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx",
   count_reads = FALSE,
   total_reads
 ){
