@@ -262,7 +262,7 @@ run_split_pipe <- function(
     end_time <- Sys.time()
 
     difference <- difftime(end_time, start_time, units='mins')
-    print(paste0("Pipeline completed in: ",difference))
+    print(paste0("Pipeline completed in: ",round(difference, digits = 2), ' minutes'))
 
   } else {
 
