@@ -87,7 +87,7 @@ generate_barcoding_heatmaps <- function(sce_split,
   counts <- table(rt_locs)
 
   # Count the occurrence of the numbers
-  rt_counts_layout$counts[match(names(counts), df$well_position)] <- as.numeric(counts)
+  rt_counts_layout$counts[match(names(counts), rt_counts_layout$well_position)] <- as.numeric(counts)
 
   # Convert into a x by x matrix for plotting
   # RT is 4x12
