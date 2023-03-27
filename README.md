@@ -2,7 +2,7 @@ splitRtools: Preprocessing tools for SPLiT-seq data
 ================
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/badge/devel%20version-0.0.1.1-blue.svg)](https://github.com/JamesOpz/splitRtools)
+[![](https://img.shields.io/badge/devel%20version-0.9.0.0-blue.svg)](https://github.com/JamesOpz/splitRtools)
 [![](https://img.shields.io/github/languages/code-size/JamesOpz/splitRtools.svg)](https://github.com/JamesOpz/splitRtools)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
@@ -18,14 +18,6 @@ MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.
 The package can be installed from this github repository:
 
 ``` r
-# Insall BiocManager if not present
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-# Install required Bioconductor packages 
-BiocManager::install(c("zellkonverter", "ShortRead", "scater", "DropletUtils",
-                        "ComplexHeatmap"))
-
 # Install devtools for github installation if not present
 require(devtools)
 
@@ -115,17 +107,20 @@ arguments use `?run_split_pipe`) </br>
 library(splitRtools)
 
 # Run the splitRtool pipeline
-# You must always point to two parent folders, 
-# one containing zUMIs data folders and raw FASTQ data folders
-run_split_pipe(mode = 'merge', # Merge sublibraries or process seperately
-               n_sublibs = 2, # How many to sublibraries are present
-               data_folder = "./../test_data_sp_5_miseq/", # Location of zUMIs data directory
-               output_folder = "../test_data_sp_5_miseq_outputs/", # Output folder path
-               filtering_mode = "knee", # Filter by knee (standard) or manual value (default 1000) transcripts
-               fastq_path = "../fastq_single/", # Path to folder containing subibraru raw FASTQ
-               rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv", # RT barcode map
-               lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv", # Ligation barcode map
-               sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx" # RT plate layout file
+# Each sublibrary is contained within its own folder in the data_folder folder and must contain zUMIs output, named by sublib name.
+run_split_pipe(mode = 'single', # Merge sublibraries or process separately.
+               n_sublibs = 1, # How many to sublibraries are present
+               data_folder = "~/experiment/hpc_outputs/", # Location of zUMIs data directory
+               output_folder = "~/experiment/pipe_output", # Output folder path
+               filtering_mode = "manual", # Filter by knee (standard) or manual value (default 1000, 500 in this case) transcripts
+               filter_value = 500, # UMI filter value to determine intact cells.
+               count_reads = FALSE, # Count FASTQ files in fastq_path.
+               total_reads = 22741884, # Provide read count of single sublibrary.
+               fastq_path = NA, # Path to folder containing subibrary raw FastQ data.
+               rt_bc = "~/experiment/hpc/barcode_maps/barcodes_v2_48.csv", # RT barcode map
+               lig_bc = "~/experiment/hpc/barcode_maps/barcodes_v1.csv", # Ligation barcode map
+               sample_map = "~/experiment/barcode_maps/exp013_cell_metadata.xlsx" # RT plate layout file
+               
 )
 ```
 
