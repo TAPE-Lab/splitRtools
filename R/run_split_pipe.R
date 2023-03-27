@@ -1,22 +1,34 @@
 #' @rdname run_split_pipe
 #'
-#' @title Run the split-seq pipeline
+#' @title Run the splitRtools split-seq pipeline
 #'
-#' @param mode a string of either 'single' or 'merge', this will determine whether to process each sublibrary separately or in 'merge' mode do this and then process all the sublibraries combined together.
+#' @param mode String of either 'single' or 'merge', this will determine whether to process each sublibrary separately or in 'merge' mode do this and then process all the sublibraries combined together.
+#' @param n_sublibs Integer providing the number of sublibrary folders in the `data_folder`, this is a control number that will cause a exit if it does not match.
+#' @param data_folder File path specifying the absolute path of the folder containing the zUMIs pipeline outputs for the sublibraries. The zUMIs output folder names must be named the same as the zUMIs experiment name specified in the .yaml file.
+#' @param output_folder File path specifying where to store the outputs of the pipeline. Folder will be created if it does not exist.
+#' @param filtering_mode String of either 'knee' or 'manual' to filter data based in UMI per cell. Knee fits model from `DropletUtils`, 'manual' let user specify the cutoff selected in `filter_value`.
+#' @param filter_value Integer specifying the UMI cutoff to filter cells/barcodes by based on UMI per cell if `filtering_mode` is set to 'manual'.
+#' @param count_reads Boolean specifying whether to count the reads on R1 of sublibrary folders in the directory `fastq_path`.
+#' @param total_reads This currently only works for 'single' mode.
+#' @param fastq_path File path specifying a master folder with FASTQ files within folder labelled by sublibrary zUMI experiment name, format like `data_folder`. Only used if `count_reads = TRUE`. The pipeline will then count the number of FASTQ reads in R1 of each folder. This can be very slow.
+#' @param rt_bc File path specifying the barcode layout for the RT1 plate, see file included in package for example.
+#' @param lig_bc File path specifying the barcode layout for the L2 and L3 plates, see file included in package for example.
+#' @param sample_map File path specifying the layout of sample loading in the RT plate, indicating which samples were placed in which wells.
 #'
 #' @author James Opzoomer \email{james.opzoomer@gmail.com}
 #'
-#' @return SCE outputs, summary figures and reports from zUMIs processing of split-seq FASTQ data
+#' @return SCE outputs, summary figures and reports from zUMIs processing of split-seq FASTQ data in `output_folder` filepath.
 #'
 #' @import SingleCellExperiment
 #' @export
 
 # Bugs
 # There is a bug where two lines are added to each SCE lib info metadata slot
+# The count_reads needs to be spun into a csv submission, doesn't work with merge.
+# Need to the cell_barcodes to include sublib index or there will be conflicts
 
 # TODO
 
-# renamed the cell_names to include sublib indexes as there will be conflicts
 # Test SCE2anndata with py_pickle as may preserve some additional functionality
 
 run_split_pipe <- function(
@@ -26,12 +38,12 @@ run_split_pipe <- function(
   output_folder,
   filtering_mode = "knee",
   filter_value = 1000,
+  count_reads = FALSE,
+  total_reads,
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
-  sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx",
-  count_reads = FALSE,
-  total_reads
+  sample_map = "../test_data_sp_5_miseq/cell_metadata.xlsx"
 ){
     start_time <- Sys.time()
     message(paste0("Running pipeline config in mode - ",mode))
