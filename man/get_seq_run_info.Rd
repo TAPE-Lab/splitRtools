@@ -7,7 +7,7 @@
 get_seq_run_info(total_reads, sub_lib_fp, output_folder, exp_name)
 }
 \arguments{
-\item{fastq_path}{A string representing the raw FastQ path}
+\item{total_reads}{The total reads from the sequnecing library}
 }
 \value{
 Total reads from raw fastq file

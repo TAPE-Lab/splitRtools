@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_split_pipe.R
 \name{run_split_pipe}
 \alias{run_split_pipe}
-\title{Run the split-seq pipeline}
+\title{Run the splitRtools split-seq pipeline}
 \usage{
 run_split_pipe(
   mode = "single",
@@ -11,6 +11,8 @@ run_split_pipe(
   output_folder,
   filtering_mode = "knee",
   filter_value = 1000,
+  count_reads = FALSE,
+  total_reads,
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
@@ -18,13 +20,35 @@ run_split_pipe(
 )
 }
 \arguments{
-\item{mode}{a string of either 'single' or 'merge'}
+\item{mode}{String of either 'single' or 'merge', this will determine whether to process each sublibrary separately or in 'merge' mode do this and then process all the sublibraries combined together.}
+
+\item{n_sublibs}{Integer providing the number of sublibrary folders in the \code{data_folder}, this is a control number that will cause a exit if it does not match.}
+
+\item{data_folder}{File path specifying the absolute path of the folder containing the zUMIs pipeline outputs for the sublibraries. The zUMIs output folder names must be named the same as the zUMIs experiment name specified in the .yaml file.}
+
+\item{output_folder}{File path specifying where to store the outputs of the pipeline. Folder will be created if it does not exist.}
+
+\item{filtering_mode}{String of either 'knee' or 'manual' to filter data based in UMI per cell. Knee fits model from \code{DropletUtils}, 'manual' let user specify the cutoff selected in \code{filter_value}.}
+
+\item{filter_value}{Integer specifying the UMI cutoff to filter cells/barcodes by based on UMI per cell if \code{filtering_mode} is set to 'manual'.}
+
+\item{count_reads}{Boolean specifying whether to count the reads on R1 of sublibrary folders in the directory \code{fastq_path}.}
+
+\item{total_reads}{This currently only works for 'single' mode.}
+
+\item{fastq_path}{File path specifying a master folder with FASTQ files within folder labelled by sublibrary zUMI experiment name, format like \code{data_folder}. Only used if \code{count_reads = TRUE}. The pipeline will then count the number of FASTQ reads in R1 of each folder. This can be very slow.}
+
+\item{rt_bc}{File path specifying the barcode layout for the RT1 plate, see file included in package for example.}
+
+\item{lig_bc}{File path specifying the barcode layout for the L2 and L3 plates, see file included in package for example.}
+
+\item{sample_map}{File path specifying the layout of sample loading in the RT plate, indicating which samples were placed in which wells.}
 }
 \value{
-SCE outputs, summary figures and reports from zUMIs processing of split-seq FASTQ data
+SCE outputs, summary figures and reports from zUMIs processing of split-seq FASTQ data in \code{output_folder} filepath.
 }
 \description{
-Run the split-seq pipeline
+Run the splitRtools split-seq pipeline
 }
 \author{
 James Opzoomer \email{james.opzoomer@gmail.com}

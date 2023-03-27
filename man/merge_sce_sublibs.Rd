@@ -4,7 +4,7 @@
 \alias{merge_sce_sublibs}
 \title{Merge the individually processed unfiltered sublibraries}
 \usage{
-merge_sce_sublibs(merge_sce, exp_name_list, output_folder)
+merge_sce_sublibs(exp_name_list, output_folder)
 }
 \arguments{
 \item{sl_list}{a list object containing the sublibraries to be merged}
