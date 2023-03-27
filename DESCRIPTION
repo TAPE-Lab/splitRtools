@@ -1,6 +1,6 @@
 Package: splitRtools
-Title: Processes split-seq data for downstream analysis
-Version: 0.0.1.1
+Title: Processes zUMIs split-seq data for downstream analysis
+Version: 0.9.0.0
 Authors@R: 
     person("James", "Opzoomer", , "james.opzoomer@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-6842-756X"))
@@ -26,7 +26,7 @@ Imports:
   RColorBrewer,
   Matrix
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
