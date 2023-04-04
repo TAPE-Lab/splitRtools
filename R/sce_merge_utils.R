@@ -171,7 +171,7 @@ sce_merge_stats <- function(sce_split,
   bar <- ggplot2::ggplot(data=celln_df, aes(x=sublibrary, y=cell_number, fill=sample)) +
     geom_bar(stat="identity", color="black") +
     theme_classic() +
-    theme(axis.text=element_text(size=12)) + ylab('Cell number recovered')
+    theme(axis.text=element_text(size=12), axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + ylab('Cell number recovered')
 
   ggsave(plot = bar, filename = paste0(output_folder, '/',exp_name ,"/gplots/cell_abundance_barplot.png"),
          width = 3, height = 4)
