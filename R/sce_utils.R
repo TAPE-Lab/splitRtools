@@ -94,7 +94,8 @@ label_sce_data <- function(sce_split,
                             lig_bc,
                             sample_map,
                             output_folder,
-                            exp_name
+                            exp_name,
+                            sl_index
 ){
 
   # Add per cell QC data
@@ -159,12 +160,16 @@ label_sce_data <- function(sce_split,
   # Cocat the names
   cocat_well_pos <- paste(rt_well_position, r2_well_position, r3_well_position, sep = "_")
 
+  # Well pos with sublib_id
+  pcr_bc4 <- paste0("sl", i)
+  full_bc <- paste(cocat_well_pos, pcr_bc4, sep = "_")
+
   # Add new colData
   sce_split$well_indexes <- cocat_well_pos
 
   # Swap the barcode with the index
   sce_split$barcode_seq <- colnames(sce_split)
-  colnames(sce_split) <- cocat_well_pos
+  colnames(sce_split) <- full_bc
 
   # Save the object
   saveRDS(sce_split, file = paste0(output_folder, '/',exp_name ,"/unfiltered/sce_rds_objects/",exp_name,"_sce_unfiltered.rds"))
