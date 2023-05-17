@@ -12,7 +12,7 @@ run_split_pipe(
   filtering_mode = "knee",
   filter_value = 1000,
   count_reads = FALSE,
-  total_reads,
+  total_reads_df,
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
@@ -34,7 +34,7 @@ run_split_pipe(
 
 \item{count_reads}{Boolean specifying whether to count the reads on R1 of sublibrary folders in the directory \code{fastq_path}.}
 
-\item{total_reads}{This currently only works for 'single' mode.}
+\item{total_reads_df}{This is a dataframe with one column "sl_name" ID and the second column "reads" containing the number of reads per sublibrary.}
 
 \item{fastq_path}{File path specifying a master folder with FASTQ files within folder labelled by sublibrary zUMI experiment name, format like \code{data_folder}. Only used if \code{count_reads = TRUE}. The pipeline will then count the number of FASTQ reads in R1 of each folder. This can be very slow.}
 

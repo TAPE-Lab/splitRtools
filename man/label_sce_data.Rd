@@ -10,7 +10,8 @@ label_sce_data(
   lig_bc,
   sample_map,
   output_folder,
-  exp_name
+  exp_name,
+  sl_index
 )
 }
 \arguments{

@@ -9,7 +9,7 @@
 #' @param filtering_mode String of either 'knee' or 'manual' to filter data based in UMI per cell. Knee fits model from `DropletUtils`, 'manual' let user specify the cutoff selected in `filter_value`.
 #' @param filter_value Integer specifying the UMI cutoff to filter cells/barcodes by based on UMI per cell if `filtering_mode` is set to 'manual'.
 #' @param count_reads Boolean specifying whether to count the reads on R1 of sublibrary folders in the directory `fastq_path`.
-#' @param total_reads This currently only works for 'single' mode.
+#' @param total_reads_df This is a dataframe with one column "sl_name" ID and the second column "reads" containing the number of reads per sublibrary.
 #' @param fastq_path File path specifying a master folder with FASTQ files within folder labelled by sublibrary zUMI experiment name, format like `data_folder`. Only used if `count_reads = TRUE`. The pipeline will then count the number of FASTQ reads in R1 of each folder. This can be very slow.
 #' @param rt_bc File path specifying the barcode layout for the RT1 plate, see file included in package for example.
 #' @param lig_bc File path specifying the barcode layout for the L2 and L3 plates, see file included in package for example.
@@ -39,7 +39,7 @@ run_split_pipe <- function(
   filtering_mode = "knee",
   filter_value = 1000,
   count_reads = FALSE,
-  total_reads,
+  total_reads_df,
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
@@ -125,15 +125,9 @@ run_split_pipe <- function(
 
       }
 
-      # Plot the raw reads -- this is edited out for time
-      # This takes a really long time and need to be modified
-      # Not sustainable in current format
-      #raw_bc_hist(sub_lib_fp = dirs[1],
-      #           output_folder = output_folder_abs,
-      #            exp_name = exp_name)
-
-      # Binning stats visualisations
-      # TODO
+      # Mach reads to sublib name
+      reads_idx <- match(exp_name, total_reads_df[,"sl_name"])
+      total_reads <- total_reads_df[,"reads"][reads_idx]
 
       # Get the overall run_stats
       # Found in general_utils.R
