@@ -161,7 +161,7 @@ label_sce_data <- function(sce_split,
   cocat_well_pos <- paste(rt_well_position, r2_well_position, r3_well_position, sep = "_")
 
   # Well pos with sublib_id
-  pcr_bc4 <- paste0("sl", i)
+  pcr_bc4 <- paste0("sl", sl_index)
   full_bc <- paste(cocat_well_pos, pcr_bc4, sep = "_")
 
   # Add new colData
