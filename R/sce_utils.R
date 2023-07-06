@@ -49,13 +49,13 @@ gen_split_sce <- function(
 
   message("SCE created!")
 
-  # Stash the Gene IDs and re-assign gene names
-  message("Stashing gene_ids for gene names")
+  # Stash the Gene IDs in the object for future use
+  message("Stashing gene_ids")
   row_data <- data.frame(gene_ids = rownames(sce_split))
   rowData(sce_split) <- row_data
-  gene_names_df$gene_name <- tolower(gene_names_df$gene_name)
-  gene_names_df$gene_name <- make.names(gene_names_df$gene_name, unique = TRUE)
 
+  message("Re-assigning with gene names")
+  # re-assign gene names, do not alter case
   # Match the names to the vector
   match_vector <- match(rownames(sce_split), gene_names_df$gene_id)
 
