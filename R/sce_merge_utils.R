@@ -59,7 +59,10 @@ merge_sce_sublibs <- function(exp_name_list,
   # Format metadata
   t_reads <- list(total_reads)
 
+  # Merge the colData
+
   message("Forming new merged SCE")
+
   # Reform the SCE
   combined_sce <- SingleCellExperiment(assays=list(counts=counts_merged_mtx,
                                                    reads=reads_merged_mtx),
