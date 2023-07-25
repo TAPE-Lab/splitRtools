@@ -2,16 +2,12 @@ splitRtools: Preprocessing tools for SPLiT-seq data
 ================
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![](https://img.shields.io/badge/devel%20version-0.9.0.0-blue.svg)](https://github.com/JamesOpz/splitRtools)
+[![](https://img.shields.io/badge/devel%20version-0.9.1.0-blue.svg)](https://github.com/JamesOpz/splitRtools)
 [![](https://img.shields.io/github/languages/code-size/JamesOpz/splitRtools.svg)](https://github.com/JamesOpz/splitRtools)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
 
 # Welcome to the splitRtools package!
-
-## This package is under active development and all functionality is not yet validated!!
-
-## The package may change significantly over development
 
 ## :arrow\_double\_down: Installation
 
@@ -22,24 +18,25 @@ The package can be installed from this github repository:
 require(devtools)
 
 # Install package from github repo
-devtools::install_github("https://github.com/JamesOpz/splitRtools")
+devtools::install_github("https://github.com/TAPE-Lab/splitRtools")
 ```
 
 ## Overview
 
 The splitRtools package is a collection of tools that are used to
-process SPLiT-seq scRNA-seq data first published in [Rosenberg et.al,
+process SPLiT-seq scRNA-seq data first described in [Rosenberg et.al,
 2019](https://www.science.org/doi/10.1126/science.aam8999?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed).
 </br> </br> The splitRtools package is designed to take as input data,
-the various outputs from the [zUMIs
+the various output files from the [zUMIs
 package](https://github.com/sdparekh/zUMIs)
 ([paper](https://academic.oup.com/gigascience/article/7/6/giy059/5005022?login=true))
-for scRNA-seq barcode mapping and alignment. The zUMIs package is used
-to take raw FASTQ output, assign and filter reads to barcodes, then map
-the cDNA reads to a reference genome using STAR producing a CellxGene
-matrix, as well as some reporting about the pipeline outputs. </br>
-</br> A sample zUMIs pipeline with configuration to work with the
-Rosenberg-2019 barcode setup is available
+for scRNA-seq cell barcode mapping and alignment. </br> </br> The zUMIs
+package takes raw FASTQ output and cell barcoding information, assigning
+and filteing reads to barcodes. It then maps the cDNA reads to a
+reference genome using STAR producing a Digital Gene Expression (DGE)
+matrix, as well as some reporting info about the pipeline. </br> </br> A
+sample zUMIs pipeline with configuration to work with the Rosenberg-2019
+barcode setup is available
 [here](https://github.com/JamesOpz/split_seq_zUMIs_pipeline).
 
 ## Running the splitRtools pipeline
@@ -48,23 +45,15 @@ Rosenberg-2019 barcode setup is available
 
 #### data\_folder
 
-The splitRtools pipeline depends on the naming of the zUMIs pipeline
+The `splitRtools` pipeline depends on the naming of the zUMIs pipeline
 barcodes/read mapping output. All zUMIs outputs for each sublibrary must
 be contained within a folder with the same name as the zUMI experiment
-name. This is the name embedded into each zUMIs output file. The zUMIs
-sublibrary output folder must also be named the same as this zUMIs
-experiment name. The folders for each individual sublibrary must be
-contained withing the `data_folder` and this folder’s absolute path must
-be specified in the `run_split_pipe()` arguments. </br>
-
-#### fastq\_path
-
-The other input folder is the FASTQ folder containing the raw data used
-as input for the zUMIs mapping pipeline. This allows zUMIs to calculate
-the total reads from each sublibrary to calculate several metrics
-relating to the experimental sequencing depth. The absolute path for
-this folder is specified in the `fastq_path` arguments of the
-`run_split_pipe()` function.</br>
+name. This is the name embedded into each zUMIs output file and is
+specified when you run the zUMIs pipeline in the `project` parameter in
+the yaml config file. </br> </br> The folders for each individual
+sublibrary must be contained withing the `data_folder` and this folder’s
+absolute path must be specified in the `run_split_pipe()` arguments.
+</br>
 
 #### File input structure
 
@@ -72,11 +61,7 @@ this folder is specified in the `fastq_path` arguments of the
 \|          \|-`sub_lib_1`</br>
 \|          \|       \|-`sub_lib_1.BCstats.txt`</br>
 \|          \|       \|-`zUMIs_output`</br> \|          \|</br>
-\|          \|-`sub_lib_2`</br> \|          \|-`sub_lib_n`</br> \|</br>
-\|-`fastq_path`</br>           \|</br>           \|`sub_lib_1`</br>
-          \|       \|-`sub_lib_1_R1.fastq.gz`</br>
-          \|       \|-`sub_lib_1_R2.fastq.gz`</br>           \|</br>
-          \|-`sub_lib_2`</br>           \|-`sub_lib_n`</br> </br>
+\|          \|-`sub_lib_2`</br> \|          \|-`sub_lib_n`</br>
 
 #### Barcode maps
 
@@ -95,6 +80,14 @@ enables the labelling of each cell with its sample of origin and is
 specified in arg `sample_map`. An example of the sample map layout sheet
 is located in this repository in `data/cell_metadata.xlsx`.
 
+#### Read counts for each sublibrary
+
+You need to specify the read counts for each sublibrary so that the
+pipeline can determine some sublibrary mapping stats. This must be
+provided as a dataframe with one column `sl_name` identifying the
+sublibrary name and second column `reads` specifying the number or raw
+reads per sublibrary. The format is shown in the example below.
+
 ### Executing the pipeline
 
 The splitRtools pipeline is run through the `run_split_pipe()` function,
@@ -103,24 +96,22 @@ for the pipeline is as follows: (for more information on pipeline
 arguments use `?run_split_pipe`) </br>
 
 ``` r
-# Load splitRtools
-library(splitRtools)
+reads_df =  data.frame(sl_name = c('exp013_p27_s4', 'exp013_p27_s5'), reads = c(1041593427, 1083652637))
 
 # Run the splitRtool pipeline
 # Each sublibrary is contained within its own folder in the data_folder folder and must contain zUMIs output, named by sublib name.
-run_split_pipe(mode = 'single', # Merge sublibraries or process separately.
-               n_sublibs = 1, # How many to sublibraries are present
-               data_folder = "~/experiment/hpc_outputs/", # Location of zUMIs data directory
-               output_folder = "~/experiment/pipe_output", # Output folder path
-               filtering_mode = "manual", # Filter by knee (standard) or manual value (default 1000, 500 in this case) transcripts
-               filter_value = 500, # UMI filter value to determine intact cells.
-               count_reads = FALSE, # Count FASTQ files in fastq_path.
-               total_reads = 22741884, # Provide read count of single sublibrary.
-               fastq_path = NA, # Path to folder containing subibrary raw FastQ data.
-               rt_bc = "~/experiment/hpc/barcode_maps/barcodes_v2_48.csv", # RT barcode map
-               lig_bc = "~/experiment/hpc/barcode_maps/barcodes_v1.csv", # Ligation barcode map
-               sample_map = "~/experiment/barcode_maps/exp013_cell_metadata.xlsx" # RT plate layout file
-               
+run_split_pipe(mode = 'single', # Process each sublibrary seperately
+               n_sublibs = 2, # How many to sublibraries are present
+               data_folder = "~/path/to/data_folder", # Location of zUMIs data directory
+               output_folder = "~/path/to/output_folder", # Output folder path
+               filtering_mode = "manual", # Filter by 'knee' (standard) or 'manual' threshold UMI value (default 1000) transcripts
+               filter_value = 500, # If filtering mode = "manual" which UMI transcript value to filter at.
+               count_reads = FALSE, # Count reads from FASTQ files, if TRUE you must provide a path to FASTQ files
+               total_reads = reads_df, # dataframe of raw read count per sublibbrary
+               fastq_path = NA, # Path to folder containing subibrary raw FASTQ
+               rt_bc = "~/path/to_RT_barcode_map/barcodes_v2_48.csv", # RT barcode map
+               lig_bc = "~/path/to_ligation_barcode_map/barcodes_v1.csv", # Ligation barcode map
+               sample_map = "~/path/to_RT_sample_layout_map/exp013_cell_metadata.xlsx" # RT plate layout file
 )
 ```
 
