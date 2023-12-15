@@ -35,9 +35,6 @@ gen_split_sce <- function(
   dge_umi <- dge_mtx_in$umicount[[inex_mode]][[ds_dge_mtx]]
   dge_reads <- dge_mtx_in$readcount[[inex_mode]][[ds_dge_mtx]]
 
-  # Load the gene names
-  gene_names_df <- readr::read_delim(paste0(sub_lib_fp, "/zUMIs_output/expression/", gene_names), delim = "\t")
-
   message("Generating SCE from DGE matrix")
 
   col_data <- data.frame(sub_lib_id = rep(exp_name, ncol(dge_umi)))
@@ -49,18 +46,27 @@ gen_split_sce <- function(
 
   message("SCE created!")
 
-  # Stash the Gene IDs in the object for future use
-  message("Stashing gene_ids")
-  row_data <- data.frame(gene_ids = rownames(sce_split))
-  rowData(sce_split) <- row_data
+  # If gene_names_fp not NULL then load the gene names into memory and assign
+  if(!is.null(gene_names)){
 
-  message("Re-assigning with gene names")
-  # re-assign gene names, do not alter case
-  # Match the names to the vector
-  match_vector <- match(rownames(sce_split), gene_names_df$gene_id)
+    # Load the gene names
+    gene_names_df <- readr::read_delim(paste0(sub_lib_fp, "/zUMIs_output/expression/", gene_names), delim = "\t")
 
-  # Assign the names
-  rownames(sce_split) <- gene_names_df$gene_name[match_vector]
+    # Stash the Gene IDs in the object for future use
+    message("Stashing gene_ids")
+    row_data <- data.frame(gene_ids = rownames(sce_split))
+    rowData(sce_split) <- row_data
+
+    message("Re-assigning with gene names")
+
+    # re-assign gene names, do not alter case
+    # Match the names to the vector
+    match_vector <- match(rownames(sce_split), gene_names_df$gene_id)
+
+    # Assign the names
+    rownames(sce_split) <- gene_names_df$gene_name[match_vector]
+
+  }else(message("No gene name file provided, keeping original gene IDs!"))
 
   # Write the SCE to file
   message("writing unfiltered SCE to file in output folder")

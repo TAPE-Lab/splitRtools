@@ -40,6 +40,7 @@ run_split_pipe <- function(
   filter_value = 1000,
   count_reads = FALSE,
   total_reads_df,
+  gene_names = TRUE,
   fastq_path,
   rt_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
   lig_bc = "../test_data_sp_5_miseq/barcodes_v1.csv",
@@ -139,8 +140,10 @@ run_split_pipe <- function(
       # Get the dge_mtx
       dge_mtx_fp <- paste0(exp_name, ".dgecounts.rds")
 
-      # Get the gene_names
-      gene_names_fp <- paste0(exp_name, ".gene_names.txt")
+      if(gene_names == TRUE){
+        # Get the gene_names from text file to match GENE_IDS
+        gene_names_fp <- paste0(exp_name, ".gene_names.txt")
+      }else(gene_names_fp <- NULL)
 
 
       # create the unfiltered SCE object
